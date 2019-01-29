@@ -1,6 +1,9 @@
 # game-of-life
 Software development methods course project
 
+##Group
+Ginevra Carbone, Domagoj Korais, Diego Baldassar
+
 ## Problem Description
 
 This Kata is about calculating the next n generations of Conway’s **Game of Life**, given any starting position. See http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life for background about the game.
