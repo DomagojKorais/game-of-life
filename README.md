@@ -1,7 +1,7 @@
 # game-of-life
 Software development methods course project
 
-##Group
+## Group's members
 Ginevra Carbone, Domagoj Korais, Diego Baldassar
 
 ## Problem Description
