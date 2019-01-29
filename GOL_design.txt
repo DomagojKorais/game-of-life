@@ -1,0 +1,55 @@
+
+// Initial draft
+
+// Module 1: GOLGrid
+
+class GOLCell {
+  private:
+    boolean alive
+
+  public:
+    GOLCell(boolean)
+    boolean getState()
+    void setState(boolean)
+}
+
+class GOLGrid {
+  private:
+    int iteration
+    int nrows
+    int ncols
+    GOLCell[ nrows*ncols ] grid
+    static final GOLCell zeroCell = GOLCell(false)
+  
+  public:
+    GOLCell[9] getCellNeighborhood(int row, int col)
+    void setCellState(int row, int col, boolean)
+}
+
+// Module 2: GOLManager
+
+class GOLParser {
+  public:
+    String readFile(String filename) throws
+      /* maybe move this member to main? */
+    GOLGrid parse(String) throws
+    String dump(GOLGrid)
+}
+
+class GOLManager {
+  private:
+    GOLGrid gridCurrent
+    GOLGrid gridOld
+    static GOLParser parser = new GOLParser()
+
+  public:
+    GOLManager()
+    void setGrid(String filename)
+      /* call parser.readFile, parser.parse and then self.setGrid(iter, grid) */
+    void setGrid(int iter, GOLGrid)
+      /* set gridCurrent, allocate gridOld */
+    GOLGrid getGrid()
+    void performSingleIteration()
+      /* swap gridOld and gridCurrent                                            **
+      ** change gridCurrent using gridOld as a base, incrementing iteration by 1 */
+}
