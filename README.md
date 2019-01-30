@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ginevracoal/game-of-life.svg?branch=master)](https://travis-ci.org/ginevracoal/game-of-life)
+
 # game-of-life
 Software development methods course project
 
