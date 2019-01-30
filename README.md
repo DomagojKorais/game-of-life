@@ -1,6 +1,8 @@
 # game-of-life
 Software development methods course project
 
+Instructions about the exam: https://moodle2.units.it/mod/page/view.php?id=103390
+
 ## Group's members
 Ginevra Carbone, Domagoj Korais, Diego Baldassar
 
