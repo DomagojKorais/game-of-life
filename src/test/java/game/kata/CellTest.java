@@ -25,6 +25,19 @@ public class CellTest {
         assertEquals(neverBorn.status,1);
     }
 
+    @Test
+    public void checkSadEvolution(){
+        boolean die= true;
+        Cell sadCell = new Cell(1,5);
+        assertEquals(sadCell.evolve(die),0);
+    }
+
+    @Test
+    public void checkHappyEvolution(){
+        boolean die= false;
+        Cell sadCell = new Cell(1,5);
+        assertEquals(sadCell.evolve(die),1);
+    }
 
 
 

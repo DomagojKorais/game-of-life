@@ -15,4 +15,14 @@ public class Cell {
         }
     }
 
+    public int evolve(boolean die){
+        if (die){
+            return 0;
+        }else{
+            return 1;
+        }
+
+
+    }
+
 }
