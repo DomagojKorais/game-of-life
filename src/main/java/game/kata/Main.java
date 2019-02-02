@@ -6,5 +6,6 @@ public class Main {
         String path = "grid";
         GridReader reader = new GridReader();
         char[][] matrix = reader.readGrid(path);
+
     }
 }
