@@ -1,7 +1,4 @@
 .idea/*
-.gradle/*
-gradle/*
-settings.gradle
-gradlew.bat
-build.gradle
+
+
 

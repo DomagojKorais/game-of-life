@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="game.kata.GridReaderTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2019-02-01T18:48:14" hostname="ginevracoal" time="0.014">
+<testsuite name="game.kata.GridReaderTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2019-02-02T10:01:28" hostname="ginevracoal" time="0.012">
   <properties/>
-  <testcase name="readTestGrid" classname="game.kata.GridReaderTest" time="0.014"/>
+  <testcase name="readTestGrid" classname="game.kata.GridReaderTest" time="0.012"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
