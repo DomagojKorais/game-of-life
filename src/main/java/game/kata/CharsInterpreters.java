@@ -3,7 +3,7 @@ package game.kata;
 
 //Takes in input a matrix of chars and returns a matrix of integers with 1= alive and 0 = death
 public class CharsInterpreters {
-
+    //Define dictionary
     private char alive = '*';
     private char death = '.';
     private int aliveNumeric = 1;

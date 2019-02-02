@@ -3,6 +3,7 @@ package game.kata;
 import org.junit.Test;
 import static org.junit.Assert.assertArrayEquals;
 
+
 public class CharsInterpretersTest {
 
     private static GridReader reader = new GridReader();
