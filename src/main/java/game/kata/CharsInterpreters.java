@@ -6,6 +6,9 @@ public class CharsInterpreters {
 
     private char alive = '*';
     private char death = '.';
+    private int aliveNumeric = 1;
+    private int deathNumeric = 0;
+
 
     public int[][] convert(char [][] matrix){
         int numberOfColumns = matrix[0].length;
@@ -14,7 +17,11 @@ public class CharsInterpreters {
 
         for(int i = 0; i<numberOfRows; i++){
             for(int j = 0; j<numberOfColumns; j++)
-                convertedMatrix[i][j] = 0;
+                if (matrix[i][j]==death){
+                convertedMatrix[i][j] = deathNumeric;
+                }else{
+                    convertedMatrix[i][j] = aliveNumeric;
+                }
         }
         return convertedMatrix;
 
