@@ -39,7 +39,7 @@ public class CharsInterpretersTest {
     public void allDeathConversion() {
 
         int[][] testGrid = buildTestGridDeath();
-        char[][] allZero = getFileFromResource("allZeroGrid");
+        char[][] allZero = getFileFromResource("allZeroGrid.txt");
 
 
         assertArrayEquals(testGrid,converter.convert(allZero));
@@ -51,7 +51,7 @@ public class CharsInterpretersTest {
     public void allAliveConversion() {
 
         int[][] testGrid = buildTestGridAlive();
-        char[][] allOne = getFileFromResource("allOneGrid");
+        char[][] allOne = getFileFromResource("allOneGrid.txt");
 
 
         assertArrayEquals(testGrid,converter.convert(allOne));
@@ -64,7 +64,7 @@ public class CharsInterpretersTest {
     public void dimensions() {
 
         int[] dimensions = {4,8};
-        char[][] allOne = getFileFromResource("allOneGrid");
+        char[][] allOne = getFileFromResource("allOneGrid.txt");
         int nCols = converter.getNumberOfColumns(allOne);
         int nRows = converter.getNumberOfRows(allOne);
         int[] convertedDimensions = {nRows,nCols};
