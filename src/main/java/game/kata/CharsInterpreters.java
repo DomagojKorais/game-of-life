@@ -10,9 +10,17 @@ public class CharsInterpreters {
     private int deathNumeric = 0;
 
 
+    public int getNumberOfColumns(char [][] matrix){
+        return matrix[0].length;
+    }
+
+    public int getNumberOfRows(char [][] matrix){
+        return matrix.length;
+    }
+
     public int[][] convert(char [][] matrix){
-        int numberOfColumns = matrix[0].length;
-        int numberOfRows = matrix.length;
+        int numberOfColumns = getNumberOfColumns(matrix);
+        int numberOfRows = getNumberOfRows(matrix);
         int [][] convertedMatrix = new int [numberOfRows][numberOfColumns] ;
 
         for(int i = 0; i<numberOfRows; i++){

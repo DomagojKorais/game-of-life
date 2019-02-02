@@ -57,4 +57,19 @@ public class CharsInterpretersTest {
 
 
     }
+
+
+    @Test
+    public void dimensions() {
+
+        int[] dimensions = {4,8};
+        char[][] allOne = getFileFromResource("allOneGrid");
+        int nCols = converter.getNumberOfColumns(allOne);
+        int nRows = converter.getNumberOfRows(allOne);
+        int[] convertedDimensions = {nRows,nCols};
+
+        assertArrayEquals(dimensions,convertedDimensions);
+
+
+    }
 }
