@@ -1,11 +1,11 @@
 package game.kata;
 
 public class Cell {
-    int  status;
+    //these should be private!!
+    int status;
     int aliveNeighbours;
 
     public Cell (int inception, int neighbours){
-
 
         if (neighbours<=8 & neighbours>=0 & inception>=0 & inception <=1) {
             this.aliveNeighbours = neighbours;
@@ -25,4 +25,9 @@ public class Cell {
 
     }
 
+    public int getAliveNeighbours() {
+        return aliveNeighbours;
+    }
+
+    public int getStatus(){return status;}
 }

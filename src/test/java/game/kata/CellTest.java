@@ -7,7 +7,6 @@ public class CellTest {
 
     private Cell newBorn = new Cell(1,2);
 
-
     @Test
     public void checkCellInception(){
         assertEquals(newBorn.status,1);
