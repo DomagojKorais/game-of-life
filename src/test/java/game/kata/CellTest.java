@@ -9,19 +9,19 @@ public class CellTest {
 
     @Test
     public void checkCellInception(){
-        assertEquals(newBorn.status,1);
+        assertEquals(newBorn.getStatus(),1);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void checkWrongCellInceptionNeighbours(){
         Cell neverBorn = new Cell(1,10);
-        assertEquals(neverBorn.status,10);
+        assertEquals(neverBorn.getStatus(),10);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void checkWrongCellInception(){
         Cell neverBorn = new Cell(2,2);
-        assertEquals(neverBorn.status,1);
+        assertEquals(neverBorn.getStatus(),1);
     }
 
     @Test

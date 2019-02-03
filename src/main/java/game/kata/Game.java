@@ -4,16 +4,16 @@ public class Game {
 
     public static boolean judge (Cell cell){
         boolean deathSentence;
-        if(cell.status==1 & cell.aliveNeighbours<2) {
+        if(cell.getStatus()==1 & cell.getAliveNeighbours()<2) {
             deathSentence = true;
             return deathSentence;
-        }else if(cell.status==1 & cell.aliveNeighbours==2 | cell.aliveNeighbours==3 ) {
+        }else if(cell.getStatus()==1 & cell.getAliveNeighbours()==2 | cell.getAliveNeighbours()==3 ) {
             deathSentence = false;
             return deathSentence;
-        }else if(cell.status==1 & cell.aliveNeighbours>3) {
+        }else if(cell.getStatus()==1 & cell.getAliveNeighbours()>3) {
             deathSentence = true;
             return deathSentence;
-        }else if(cell.status==0 & cell.aliveNeighbours==3){
+        }else if(cell.getStatus()==0 & cell.getAliveNeighbours()==3){
             deathSentence = false;
             return deathSentence;
         }else{
