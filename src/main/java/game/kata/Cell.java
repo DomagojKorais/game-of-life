@@ -1,7 +1,6 @@
 package game.kata;
 
 public class Cell {
-    //these should be private!!
     private int status;
     private int aliveNeighbours;
 
