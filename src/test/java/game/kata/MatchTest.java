@@ -24,7 +24,7 @@ public class MatchTest {
 
     @Test
     public void constructor(){
-        int NumberOfgenerations = 10;
+        int NumberOfgenerations = 0;
         int[][] testMatrix = buildTestMatrix();
         Grid grid = new Grid(testMatrix);
         Match match = new Match(NumberOfgenerations,grid);
@@ -41,12 +41,37 @@ public class MatchTest {
         System.setOut(new PrintStream(outContent));
         // After this all System.out.println() statements will come to outContent stream.
         match.printCurrentMatchStatus();
-        assertEquals(  "Generation: 10\n" +
+        assertEquals(  "Generation: 0\n" +
                                 "\n" +
                                 "00000000\n" +
                                 "00001000\n" +
                                 "00011000\n" +
                                 "00000000\n",outContent.toString());
+
+    }
+    @Test
+    public void play(){
+        int NumberOfgenerations = 2;
+        int[][] testMatrix = buildTestMatrix();
+        Grid grid = new Grid(testMatrix);
+        Match match = new Match(NumberOfgenerations,grid);
+        //Intercept output
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        // After this all System.out.println() statements will come to outContent stream.
+        match.play();
+        assertEquals(  "Generation: 0\n" +
+                "\n" +
+                "00000000\n" +
+                "00001000\n" +
+                "00011000\n" +
+                "00000000\n"+"\n"+"\n"
+                +"Generation: 1\n" +
+                "\n" +
+                "00000000\n" +
+                "00011000\n" +
+                "00011000\n" +
+                "00000000\n"+"\n"+"\n",outContent.toString());
 
     }
 
