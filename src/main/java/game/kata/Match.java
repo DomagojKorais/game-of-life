@@ -24,9 +24,10 @@ public class Match {
 
     }
 
-    public void play (){
+    public void play ()throws InterruptedException{
 
         for (int i = 0; i < numberOfGenerations; i++) {
+            Thread.sleep(500);
             this.currentGeneration = i;
             printCurrentMatchStatus();
             currentGrid =  currentGrid.evolve();

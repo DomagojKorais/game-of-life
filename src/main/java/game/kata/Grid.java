@@ -49,7 +49,12 @@ class Grid {
     public void printGrid(){
         for (int i = 0; i < rows; ++i) {
             for (int j = 0; j < columns; ++j)
-                System.out.print(cellMatrix[i][j].getStatus());
+                if(cellMatrix[i][j].getStatus()==1) {
+                    System.out.print("*");
+                }else{
+                    System.out.print(" ");
+                }
+
             System.out.print("\n");
         }
     }
