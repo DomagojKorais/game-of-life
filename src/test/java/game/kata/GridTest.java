@@ -34,9 +34,7 @@ public class GridTest {
     public void check0CellNeighbours() throws NullPointerException {
 
         int[][] testMatrix = buildTestMatrix();
-
         Grid grid = new Grid(testMatrix);
-        //Cell chosenCell = grid.getCell(1,4);
 
         assertEquals(0, grid.countAliveNeighbors(testMatrix,3,7));
     }
@@ -45,9 +43,7 @@ public class GridTest {
     public void check1CellNeighbours() throws NullPointerException {
 
         int[][] testMatrix = buildTestMatrix();
-
         Grid grid = new Grid(testMatrix);
-        //Cell chosenCell = grid.getCell(1,4);
 
         assertEquals(1, grid.countAliveNeighbors(testMatrix,0,4));
     }
@@ -56,12 +52,36 @@ public class GridTest {
     public void check2CellNeighbours() throws NullPointerException {
 
         int[][] testMatrix = buildTestMatrix();
-
         Grid grid = new Grid(testMatrix);
-        //Cell chosenCell = grid.getCell(1,4);
 
         assertEquals(2, grid.countAliveNeighbors(testMatrix,1,4));
     }
 
+    @Test
+    public void checkNewbornCell(){
+        int[][] testMatrix = buildTestMatrix();
+        Grid grid = new Grid(testMatrix);
+
+        int[][] newIntMatrix = grid.evolve();
+        assertEquals(1, newIntMatrix[1][3]);
+    }
+
+    @Test
+    public void checkStillAliveCell(){
+        int[][] testMatrix = buildTestMatrix();
+        Grid grid = new Grid(testMatrix);
+
+        int[][] newIntMatrix = grid.evolve();
+        assertEquals(1, newIntMatrix[2][3]);
+    }
+
+    @Test
+    public void checkStillDeadCell(){
+        int[][] testMatrix = buildTestMatrix();
+        Grid grid = new Grid(testMatrix);
+
+        int[][] newIntMatrix = grid.evolve();
+        assertEquals(0, newIntMatrix[2][5]);
+    }
 
 }

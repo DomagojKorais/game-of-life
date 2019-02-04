@@ -1,6 +1,5 @@
 package game.kata;
-
-import java.util.Arrays;
+import static game.kata.Game.judge;
 
 class Grid {
     private static int rows;
@@ -43,14 +42,6 @@ class Grid {
         return cellMatrix[i][j];
     }
 
-    public int getRows(){
-        return rows;
-    }
-
-    public int getColumns(){
-        return columns;
-    }
-
     public Cell[][] getCellMatrix(){
         return cellMatrix;
     }
@@ -61,5 +52,21 @@ class Grid {
                 System.out.print(cellMatrix[i][j].getStatus());
             System.out.print("\n");
         }
+    }
+
+    public int[][] evolve(){
+        int[][] newIntMatrix = new int[rows][columns];
+
+        for (int i = 0; i < rows; ++i) {
+            for (int j = 0; j < columns; ++j) {
+                Cell cell = cellMatrix[i][j];
+                boolean sentence = judge(cell);
+                int status = cell.evolve(sentence);
+                newIntMatrix[i][j] = status;
+            }
+        }
+
+        return newIntMatrix;
+
     }
 }
