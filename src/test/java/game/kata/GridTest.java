@@ -2,6 +2,9 @@ package game.kata;
 
 import org.junit.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 import static org.junit.Assert.assertEquals;
 
 public class GridTest {
@@ -79,6 +82,22 @@ public class GridTest {
         Grid grid = new Grid(testMatrix);
         Grid newGrid = grid.evolve();
         assertEquals(0, newGrid.getCell(2,5).getStatus());
+    }
+
+    @Test
+    public void printGrid(){
+
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        // After this all System.out.println() statements will come to outContent stream.
+
+        int[][] testMatrix = buildTestMatrix();
+        Grid grid = new Grid(testMatrix);
+        grid.printGrid();
+        assertEquals("00000000\n" +
+                              "00001000\n" +
+                              "00011000\n" +
+                              "00000000\n",outContent.toString());
     }
 
 }
