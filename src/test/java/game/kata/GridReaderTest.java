@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.io.FileNotFoundException;
+import java.util.Objects;
 
 import static org.junit.Assert.*;
 
@@ -12,40 +13,17 @@ public class GridReaderTest {
 
     private static GridReader reader = new GridReader();
 
-    private char[][] getFileFromResource(String resourceName) throws NullPointerException {
-        String fileName = GridReaderTest.class.getClassLoader().getResource(resourceName).getFile();
-        return reader.readGrid(fileName);
-    }
-
-    private char[][] buildTestGrid(){
-        char [][] testGrid = new char[4][8];
-        for(int i = 0; i<4; i++){
-            for(int j = 0; j<8; j++)
-                testGrid[i][j] = '.';
-        }
-        testGrid[1][4] = '*';
-        testGrid[2][3] = '*';
-        testGrid[2][4] = '*';
-
-        return testGrid;
+    private String getFileFromResource(String resourceName) throws NullPointerException {
+        return Objects.requireNonNull(GridReaderTest.class.getClassLoader().getResource(resourceName)).getFile();
     }
 
     @Rule
     public ExpectedException exceptionGrabber = ExpectedException.none();
 
     @Test
-    public void readTestGrid() {
-
-        char[][] testGrid = buildTestGrid();
-        char[][] fileContent = getFileFromResource("grid.txt");
-
-        assertArrayEquals(testGrid, fileContent);
-    }
-
-    @Test
     public void readFileTest() throws NullPointerException, FileNotFoundException {
-        String fileName = GridReaderTest.class.getClassLoader().getResource("sparse_lines.txt").getFile();
-        assertArrayEquals(reader.readFile(fileName),
+        String filename = getFileFromResource("sparse_lines.txt");
+        assertArrayEquals(reader.readFile(filename),
                 new String[] {"Line 1", "Line 2", "Line 3"});
     }
 
@@ -143,9 +121,9 @@ public class GridReaderTest {
 
     @Test
     public void fullParsingCheck() throws FileNotFoundException {
-        String fileName = GridReaderTest.class.getClassLoader().getResource("grid.txt").getFile();
+        String filename = getFileFromResource("grid.txt");
 
-        Grid testGrid = reader.parseGridFromFile(fileName);
+        Grid testGrid = reader.parseGridFromFile(filename);
 
         int[][] testMat = new int[][] {{0,0,0,0,0,0,0,0},
                                        {0,0,0,0,1,0,0,0},
@@ -153,4 +131,29 @@ public class GridReaderTest {
                                        {0,0,0,0,0,0,0,0}};
         matchGridWithMatrixAndGen(testGrid, testMat, 1);
     }
+/*
+    @Test
+    public void allDeathTest() throws FileNotFoundException {
+
+        String filename = getFileFromResource("allZeroGrid.txt");
+        Grid testGrid = reader.parseGridFromFile(filename);
+        int[][] testMat = new int[4][8];
+        for (int[] row : testMat)
+            Arrays.fill(row, 0); // only for consistency, Java guarantees initialization to zero
+
+        matchGridWithMatrixAndGen(testGrid, testMat, 1);
+    }
+
+    @Test
+    public void allAliveTest() throws FileNotFoundException {
+
+        String filename = getFileFromResource("allOneGrid.txt");
+        Grid testGrid = reader.parseGridFromFile(filename);
+        int[][] testMat = new int[4][8];
+        for (int[] row : testMat)
+            Arrays.fill(row, 1);
+
+        matchGridWithMatrixAndGen(testGrid, testMat, 1);
+    }*/
+
 }
