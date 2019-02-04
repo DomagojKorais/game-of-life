@@ -61,27 +61,24 @@ public class GridTest {
     public void checkNewbornCell(){
         int[][] testMatrix = buildTestMatrix();
         Grid grid = new Grid(testMatrix);
-
-        int[][] newIntMatrix = grid.evolve();
-        assertEquals(1, newIntMatrix[1][3]);
+        Grid newGrid = grid.evolve();
+        assertEquals(1, newGrid.getCell(1,3).getStatus());
     }
 
     @Test
     public void checkStillAliveCell(){
         int[][] testMatrix = buildTestMatrix();
         Grid grid = new Grid(testMatrix);
-
-        int[][] newIntMatrix = grid.evolve();
-        assertEquals(1, newIntMatrix[2][3]);
+        Grid newGrid = grid.evolve();
+        assertEquals(1, newGrid.getCell(2,3).getStatus());
     }
 
     @Test
     public void checkStillDeadCell(){
         int[][] testMatrix = buildTestMatrix();
         Grid grid = new Grid(testMatrix);
-
-        int[][] newIntMatrix = grid.evolve();
-        assertEquals(0, newIntMatrix[2][5]);
+        Grid newGrid = grid.evolve();
+        assertEquals(0, newGrid.getCell(2,5).getStatus());
     }
 
 }

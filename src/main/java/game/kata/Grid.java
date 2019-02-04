@@ -54,7 +54,7 @@ class Grid {
         }
     }
 
-    public int[][] evolve(){
+    public Grid evolve(){
         int[][] newIntMatrix = new int[rows][columns];
 
         for (int i = 0; i < rows; ++i) {
@@ -66,7 +66,7 @@ class Grid {
             }
         }
 
-        return newIntMatrix;
+        return new Grid(newIntMatrix);
 
     }
 }
