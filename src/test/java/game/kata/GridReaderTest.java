@@ -55,7 +55,7 @@ public class GridReaderTest {
     public void parseGrid_sizeDeclarationException1() {
         String[] testLines = new String[] {"GeNeRaTioN     1:", "1", "*"};
         exceptionGrabber.expect(IllegalArgumentException.class);
-        exceptionGrabber.expectMessage("Wrong matrix size declaration");
+        exceptionGrabber.expectMessage("Matrix dimension specification must be a pair of non-negative integers");
         reader.parseGrid(testLines);
     }
 
@@ -63,7 +63,7 @@ public class GridReaderTest {
     public void parseGrid_sizeDeclarationException3() {
         String[] testLines = new String[] {"GeNeRaTioN     1:", "1 1;", "*"};
         exceptionGrabber.expect(IllegalArgumentException.class);
-        exceptionGrabber.expectMessage("Wrong matrix size declaration");
+        exceptionGrabber.expectMessage("Matrix dimension specification must be a pair of non-negative integers");
         reader.parseGrid(testLines);
     }
 
@@ -71,7 +71,7 @@ public class GridReaderTest {
     public void parseGrid_sizeDeclarationFormatException() {
         String[] testLines = new String[] {"GeNeRaTioN     1:", "1 X", "*"};
         exceptionGrabber.expect(IllegalArgumentException.class);
-        exceptionGrabber.expectMessage("Wrong matrix size declaration");
+        exceptionGrabber.expectMessage("Matrix dimension specification must be a pair of non-negative integers");
         reader.parseGrid(testLines);
     }
 

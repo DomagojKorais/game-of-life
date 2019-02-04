@@ -53,13 +53,15 @@ public class GridReader {
 
         line_words = isolateWords.split(lines[1]);
         if (line_words.length != 2)
-            throw new IllegalArgumentException("Wrong matrix size declaration");
+            throw new IllegalArgumentException("Matrix dimension specification must be a pair of non-negative integers");
         try {
             rows =    Integer.parseInt(line_words[0]);
             columns = Integer.parseInt(line_words[1]);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Wrong matrix size declaration");
+            throw new IllegalArgumentException("Matrix dimension specification must be a pair of non-negative integers");
         }
+        if (rows < 0 | columns < 0)
+            throw new IllegalArgumentException("Matrix dimension specification must be a pair of non-negative integers");
 
         if (lines.length != 2 + rows)
             throw new IllegalArgumentException("Number of matrix rows does not match the declaration");
