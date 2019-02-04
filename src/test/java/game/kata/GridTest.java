@@ -23,7 +23,7 @@ public class GridTest {
     public void checkCellStatus() throws NullPointerException {
 
         int[][] testMatrix = buildTestMatrix();
-        Grid grid = new Grid(1, testMatrix.length, testMatrix[0].length, testMatrix);
+        Grid grid = new Grid(testMatrix);
         //grid.printGrid();
 
         Cell chosenCell = grid.getCell(1,4);
@@ -35,7 +35,7 @@ public class GridTest {
 
         int[][] testMatrix = buildTestMatrix();
 
-        Grid grid = new Grid(1, testMatrix.length, testMatrix[0].length, testMatrix);
+        Grid grid = new Grid(testMatrix);
         //Cell chosenCell = grid.getCell(1,4);
 
         assertEquals(0, grid.countAliveNeighbors(testMatrix,3,7));
@@ -46,7 +46,7 @@ public class GridTest {
 
         int[][] testMatrix = buildTestMatrix();
 
-        Grid grid = new Grid(1, testMatrix.length, testMatrix[0].length, testMatrix);
+        Grid grid = new Grid(testMatrix);
         //Cell chosenCell = grid.getCell(1,4);
 
         assertEquals(1, grid.countAliveNeighbors(testMatrix,0,4));
@@ -57,7 +57,7 @@ public class GridTest {
 
         int[][] testMatrix = buildTestMatrix();
 
-        Grid grid = new Grid(1, testMatrix.length, testMatrix[0].length, testMatrix);
+        Grid grid = new Grid(testMatrix);
         //Cell chosenCell = grid.getCell(1,4);
 
         assertEquals(2, grid.countAliveNeighbors(testMatrix,1,4));

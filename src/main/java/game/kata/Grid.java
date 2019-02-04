@@ -3,14 +3,12 @@ package game.kata;
 import java.util.Arrays;
 
 class Grid {
-    private int generation;
     private static int rows;
     private static int columns;
     private Cell[][] cellMatrix;
 
-    public Grid(int _generation, int _rows, int _cols, int[][] _intMatrix) {
+    public Grid(int[][] _intMatrix) {
 
-        generation = _generation;
         rows = _intMatrix.length;
         columns = _intMatrix[0].length;
 
