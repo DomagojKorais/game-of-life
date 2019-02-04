@@ -51,6 +51,7 @@ public class MatchTest {
     }
     @Test
     public void play(){
+
         int NumberOfgenerations = 2;
         int[][] testMatrix = buildTestMatrix();
         Grid grid = new Grid(testMatrix);
