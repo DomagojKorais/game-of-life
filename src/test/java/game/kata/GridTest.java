@@ -47,6 +47,8 @@ public class GridTest {
 
         IntBinaryOperator lambda = (int i, int j) -> grid.getCell(i,j).getStatus();
         matchBinaryFeatureAgainstGivenMatrix(lambda, testMatrix);
+        assertEquals(grid.getRows(), testMatrix.length);
+        assertEquals(grid.getColumns(), testMatrix[0].length);
     }
 
     @Test

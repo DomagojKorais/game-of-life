@@ -35,13 +35,12 @@ public class GridReaderTest {
     }
 
     private void matchGridWithMatrixAndGen(Grid grid, int[][] mat, int gen) {
-        Cell[][] cellsMatrix = grid.getCellMatrix();
-//        assertEquals(testGrid.generation, gen); // TODO: implement generation functionality in Grid and here, and replace following with getRows() and getColumns()
-        assertEquals(cellsMatrix.length, mat.length); // rows
-        assertEquals(cellsMatrix[0].length, mat[0].length); // columns
+//        assertEquals(testGrid.generation, gen); // TODO: implement generation functionality in Grid and here
+        assertEquals(grid.getRows(), mat.length);
+        assertEquals(grid.getColumns(), mat[0].length);
         boolean is_matching = true;
-        for (int i = 0; i < mat.length; ++i)
-            for (int j = 0; j < mat[0].length; ++j)
+        for (int i = 0; i < grid.getRows(); ++i)
+            for (int j = 0; j < grid.getColumns(); ++j)
                 is_matching &= (grid.getCell(i,j).getStatus() == mat[i][j]);
         assertTrue(is_matching);
     }

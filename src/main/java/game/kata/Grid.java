@@ -2,9 +2,12 @@ package game.kata;
 import static game.kata.Game.judge;
 
 class Grid {
-    private static int rows;
-    private static int columns;
-    private Cell[][] cellMatrix;
+    private final int rows;
+    private final int columns;
+    private final Cell[][] cellMatrix;
+
+    public int getRows()    { return rows; }
+    public int getColumns() { return columns; }
 
     public Grid(int[][] _intMatrix) {
 
