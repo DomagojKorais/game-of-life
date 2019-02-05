@@ -1,5 +1,8 @@
 package game.kata;
-import static game.kata.Game.judge;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 class Grid {
     private final int rows;
@@ -50,13 +53,10 @@ class Grid {
 
 
     public Grid evolve(){
-        int[][] newIntMatrix = new int[rows][columns];
 
-        for (int i = 0; i < rows; ++i) {
-            for (int j = 0; j < columns; ++j) {
-                newIntMatrix[i][j] = cellMatrix[i][j].evolve();
-            }
-        }
+        int[][] newIntMatrix = Arrays.stream(cellMatrix)
+                .map(cell -> Arrays.stream(cell).mapToInt(Cell::evolve).toArray())
+                .toArray(int[][]::new);
 
         return new Grid(newIntMatrix);
 
