@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 
 public class CellTest {
 
-    private Cell newBorn = new Cell(1,2);
+    private static final Cell newBorn = new Cell(1,2);
 
     @Test
     public void checkCellInception(){
@@ -26,14 +26,14 @@ public class CellTest {
 
     @Test
     public void checkSadEvolution(){
-        boolean die= true;
+        boolean die = true;
         Cell sadCell = new Cell(1,5);
         assertEquals(sadCell.evolve(die),0);
     }
 
     @Test
     public void checkHappyEvolution(){
-        boolean die= false;
+        boolean die = false;
         Cell sadCell = new Cell(1,5);
         assertEquals(sadCell.evolve(die),1);
     }
