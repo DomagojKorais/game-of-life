@@ -4,94 +4,73 @@ import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.function.IntBinaryOperator;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class GridTest {
 
-    private int[][] buildTestMatrix(){
-        int [][] testMatrix = new int[4][8];
-        for(int i = 0; i<4; i++){
-            for(int j = 0; j<8; j++)
-                testMatrix[i][j] = 0;
-        }
-        testMatrix[1][4] = 1;
-        testMatrix[2][3] = 1;
-        testMatrix[2][4] = 1;
+    private static final int[][] testMatrix = new int[][] {
+            {0,0,0,0,0,0,0,0,},
+            {0,0,0,0,1,0,0,0,},
+            {0,0,0,1,1,0,0,0,},
+            {0,0,0,0,0,0,0,0,}
+    };
 
-        return testMatrix;
+    private static final int[][] testMatrixNeighbors = new int[][] {
+            {0,0,0,1,1,1,0,0,},
+            {0,0,1,3,2,2,0,0,},
+            {0,0,1,2,2,2,0,0,},
+            {0,0,1,2,2,1,0,0,}
+    };
+
+    private static final int[][] testMatrixEvolved = new int[][] {
+            {0,0,0,0,0,0,0,0,},
+            {0,0,0,1,1,0,0,0,},
+            {0,0,0,1,1,0,0,0,},
+            {0,0,0,0,0,0,0,0,}
+    };
+
+    private void matchBinaryFeatureAgainstGivenMatrix(IntBinaryOperator lambda, int[][] mat) {
+        boolean is_matching = true;
+        for (int i = 0; i < mat.length; ++i)
+            for (int j = 0; j < mat[0].length; ++j)
+                is_matching &= (lambda.applyAsInt(i,j) == mat[i][j]);
+        assertTrue(is_matching);
     }
 
     @Test
-    public void checkCellStatus() throws NullPointerException {
-
-        int[][] testMatrix = buildTestMatrix();
+    public void checkWholeContent() {
         Grid grid = new Grid(testMatrix);
         //grid.printGrid();
 
-        Cell chosenCell = grid.getCell(1,4);
-        assertEquals(1, chosenCell.getStatus());
+        IntBinaryOperator lambda = (int i, int j) -> grid.getCell(i,j).getStatus();
+        matchBinaryFeatureAgainstGivenMatrix(lambda, testMatrix);
     }
 
     @Test
-    public void check0CellNeighbours() throws NullPointerException {
-
-        int[][] testMatrix = buildTestMatrix();
+    public void checkAllNeighbors() {
         Grid grid = new Grid(testMatrix);
 
-        assertEquals(0, grid.countAliveNeighbors(testMatrix,3,7));
+        IntBinaryOperator lambda = (int i, int j) -> grid.countAliveNeighbors(testMatrix, i, j);
+        matchBinaryFeatureAgainstGivenMatrix(lambda, testMatrixNeighbors);
     }
 
     @Test
-    public void check1CellNeighbours() throws NullPointerException {
-
-        int[][] testMatrix = buildTestMatrix();
-        Grid grid = new Grid(testMatrix);
-
-        assertEquals(1, grid.countAliveNeighbors(testMatrix,0,4));
-    }
-
-    @Test
-    public void check2CellNeighbours() throws NullPointerException {
-
-        int[][] testMatrix = buildTestMatrix();
-        Grid grid = new Grid(testMatrix);
-
-        assertEquals(2, grid.countAliveNeighbors(testMatrix,1,4));
-    }
-
-    @Test
-    public void checkNewbornCell(){
-        int[][] testMatrix = buildTestMatrix();
+    public void checkEvolvedContent() {
         Grid grid = new Grid(testMatrix);
         Grid newGrid = grid.evolve();
-        assertEquals(1, newGrid.getCell(1,3).getStatus());
+        IntBinaryOperator lambda = (int i, int j) -> newGrid.getCell(i,j).getStatus();
+        matchBinaryFeatureAgainstGivenMatrix(lambda, testMatrixEvolved);
     }
 
     @Test
-    public void checkStillAliveCell(){
-        int[][] testMatrix = buildTestMatrix();
-        Grid grid = new Grid(testMatrix);
-        Grid newGrid = grid.evolve();
-        assertEquals(1, newGrid.getCell(2,3).getStatus());
-    }
-
-    @Test
-    public void checkStillDeadCell(){
-        int[][] testMatrix = buildTestMatrix();
-        Grid grid = new Grid(testMatrix);
-        Grid newGrid = grid.evolve();
-        assertEquals(0, newGrid.getCell(2,5).getStatus());
-    }
-
-    @Test
-    public void printGrid(){
-
+    public void checkPrintGrid() {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
         // After this all System.out.println() statements will come to outContent stream.
 
-        int[][] testMatrix = buildTestMatrix();
         Grid grid = new Grid(testMatrix);
         grid.printGrid();
         assertEquals("00000000\n" +
