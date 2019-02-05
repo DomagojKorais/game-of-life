@@ -15,7 +15,7 @@ public class GridReader {
     private static final int  deadInt   = 0;
 
     private static final Map<Integer,Integer> translationParseMap = Collections.unmodifiableMap(
-            new ConcurrentSkipListMap<Integer,Integer>() {{
+            new HashMap<Integer,Integer>() {{
                 put((int) deadChar, deadInt);   // Keys must be ints because Java
                 put((int) aliveChar, aliveInt); // See String::chars for reason
             }}
@@ -34,34 +34,58 @@ public class GridReader {
         return retval;
     }
 
+    private int parseGenerationRow(String[] line_words) throws IllegalArgumentException {
+        final IllegalArgumentException exc = new IllegalArgumentException(
+                "Wrong generation number specification format. Format: 'Generation <num>: [possibly comments]'" );
+        int generation;
+
+        if (line_words.length < 2 | !line_words[0].equalsIgnoreCase("generation"))
+            throw exc;
+
+        try {
+            generation = Integer.parseInt(line_words[1]);
+        }
+        catch (NumberFormatException e) { throw exc; }
+
+        if (line_words.length > 2)
+            if (line_words[2].charAt(0) != ':')
+                throw exc;
+
+        return generation;
+    }
+
+    private int[] parseDimensionRow(String[] line_words) throws IllegalArgumentException {
+        final IllegalArgumentException exc = new IllegalArgumentException(
+                "Wrong matrix dimension specification format. Format: '<num_rows> <num_columns>' Numbers must be >= 0" );
+        int rows, columns;
+
+        if (line_words.length != 2)
+            throw exc;
+        try {
+            rows =    Integer.parseInt(line_words[0]);
+            columns = Integer.parseInt(line_words[1]);
+        }
+        catch (NumberFormatException e) { throw exc; }
+
+        if (rows < 0 | columns < 0)
+            throw exc;
+
+        return new int[] {rows, columns};
+    }
+
     public Grid parseGrid(String[] lines) throws IllegalArgumentException {
-        String[] line_words;
-        Pattern isolateWords = Pattern.compile("\\s+|\\b(?=[^\\s\\w])|(?<=[^\\s\\w])\\b");
+        final Pattern isolateWords = Pattern.compile("\\s+|(?<=\\S)\\b(?=\\S)");
+//        Pattern isolateWords = Pattern.compile("\\s+|\\b(?=[^\\s\\w])|(?<=[^\\s\\w])\\b");
         int generation, rows, columns;
 
         if (lines.length < 2)
             throw new IllegalArgumentException(("Input too short"));
 
-        line_words = isolateWords.split(lines[0]);
-        if (!line_words[0].equalsIgnoreCase("generation"))
-            throw new IllegalArgumentException("Missing generation number declaration");
-        try {
-            generation = Integer.parseInt(line_words[1]);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Wrong generation number format");
-        }
+        generation = parseGenerationRow( isolateWords.split(lines[0]) );
 
-        line_words = isolateWords.split(lines[1]);
-        if (line_words.length != 2)
-            throw new IllegalArgumentException("Matrix dimension specification must be a pair of non-negative integers");
-        try {
-            rows =    Integer.parseInt(line_words[0]);
-            columns = Integer.parseInt(line_words[1]);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Matrix dimension specification must be a pair of non-negative integers");
-        }
-        if (rows < 0 | columns < 0)
-            throw new IllegalArgumentException("Matrix dimension specification must be a pair of non-negative integers");
+        int[] dimensions = parseDimensionRow( isolateWords.split(lines[1]) );
+        rows = dimensions[0];
+        columns = dimensions[1];
 
         if (lines.length != 2 + rows)
             throw new IllegalArgumentException("Number of matrix rows does not match the declaration");
