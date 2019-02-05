@@ -32,7 +32,7 @@ public class GridTest {
             {0,0,0,0,0,0,0,0,}
     };
 
-    private void matchBinaryFeatureAgainstGivenMatrix(IntBinaryOperator lambda, int[][] mat) {
+    private void matchLambdaResultsAgainstMatrix(IntBinaryOperator lambda, int[][] mat) {
         boolean is_matching = true;
         for (int i = 0; i < mat.length; ++i)
             for (int j = 0; j < mat[0].length; ++j)
@@ -43,10 +43,9 @@ public class GridTest {
     @Test
     public void checkWholeContent() {
         Grid grid = new Grid(testMatrix);
-        //grid.printGrid();
 
         IntBinaryOperator lambda = (int i, int j) -> grid.getCell(i,j).getStatus();
-        matchBinaryFeatureAgainstGivenMatrix(lambda, testMatrix);
+        matchLambdaResultsAgainstMatrix(lambda, testMatrix);
         assertEquals(grid.getRows(), testMatrix.length);
         assertEquals(grid.getColumns(), testMatrix[0].length);
     }
@@ -56,7 +55,7 @@ public class GridTest {
         Grid grid = new Grid(testMatrix);
 
         IntBinaryOperator lambda = (int i, int j) -> grid.countAliveNeighbors(testMatrix, i, j);
-        matchBinaryFeatureAgainstGivenMatrix(lambda, testMatrixNeighbors);
+        matchLambdaResultsAgainstMatrix(lambda, testMatrixNeighbors);
     }
 
     @Test
@@ -64,7 +63,7 @@ public class GridTest {
         Grid grid = new Grid(testMatrix);
         Grid newGrid = grid.evolve();
         IntBinaryOperator lambda = (int i, int j) -> newGrid.getCell(i,j).getStatus();
-        matchBinaryFeatureAgainstGivenMatrix(lambda, testMatrixEvolved);
+        matchLambdaResultsAgainstMatrix(lambda, testMatrixEvolved);
     }
 
     @Test
