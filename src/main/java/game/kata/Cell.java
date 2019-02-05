@@ -10,13 +10,12 @@ public class Cell {
         if (neighbours>8 | neighbours<0 | inception<0 | inception>1)
             throw new IllegalArgumentException("Invalid number of neighbours or invalid initialization value");
 
-        this.aliveNeighbours = neighbours;
         this.status = inception;
+        this.aliveNeighbours = neighbours;
     }
 
     public int evolve() {
-        boolean die = judge(this);
-        return (die ? 0 : 1);
+        return (judge(this) ? 0 : 1);
    }
 
     public int getAliveNeighbours() { return aliveNeighbours; }
