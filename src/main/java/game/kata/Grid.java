@@ -1,7 +1,5 @@
 package game.kata;
 import java.util.Arrays;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 class Grid {
     private final int rows;
@@ -11,7 +9,7 @@ class Grid {
 
     public int getRows()    { return rows; }
     public int getColumns() { return columns; }
-    public int[][] getIntMatrix(){return intMatrix;}
+    private int[][] getIntMatrix(){return intMatrix;}
 
     public Grid(int[][] _intMatrix) {
 
