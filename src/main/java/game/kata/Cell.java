@@ -1,5 +1,7 @@
 package game.kata;
 
+import static game.kata.Game.judge;
+
 public class Cell {
     private int status;
     private int aliveNeighbours;
@@ -12,7 +14,8 @@ public class Cell {
         this.status = inception;
     }
 
-    public int evolve(boolean die) {
+    public int evolve() {
+        boolean die = judge(this);
         return (die ? 0 : 1);
    }
 

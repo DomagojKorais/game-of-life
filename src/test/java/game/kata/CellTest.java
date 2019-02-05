@@ -26,16 +26,14 @@ public class CellTest {
 
     @Test
     public void checkSadEvolution(){
-        boolean die = true;
         Cell sadCell = new Cell(1,5);
-        assertEquals(sadCell.evolve(die),0);
+        assertEquals(sadCell.evolve(),0);
     }
 
     @Test
     public void checkHappyEvolution(){
-        boolean die = false;
-        Cell sadCell = new Cell(1,5);
-        assertEquals(sadCell.evolve(die),1);
+        Cell happyCell = new Cell(1,5);
+        assertEquals(happyCell.evolve(),0);
     }
 
 

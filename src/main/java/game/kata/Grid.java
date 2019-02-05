@@ -54,7 +54,7 @@ class Grid {
 
         for (int i = 0; i < rows; ++i) {
             for (int j = 0; j < columns; ++j) {
-                newIntMatrix[i][j] = cellMatrix[i][j].evolve(judge(cellMatrix[i][j]));
+                newIntMatrix[i][j] = cellMatrix[i][j].evolve();
             }
         }
 
