@@ -1,21 +1,23 @@
 package game.kata;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 class Grid {
     private final int rows;
     private final int columns;
     private final Cell[][] cellMatrix;
+    private final int[][] intMatrix;
 
     public int getRows()    { return rows; }
     public int getColumns() { return columns; }
+    public int[][] getIntMatrix(){return intMatrix;}
 
     public Grid(int[][] _intMatrix) {
 
         rows = _intMatrix.length;
         columns = _intMatrix[0].length;
+        intMatrix = _intMatrix;
 
         cellMatrix = new Cell[rows][columns];
         for (int i = 0; i < rows; ++i) {
@@ -43,19 +45,20 @@ class Grid {
         return cellMatrix[i][j];
     }
 
+
     public void printGrid(){
-        for (int i = 0; i < rows; ++i) {
-            for (int j = 0; j < columns; ++j)
-                System.out.print(cellMatrix[i][j].getStatus());
-            System.out.print("\n");
-        }
+        Arrays.stream(getIntMatrix()).forEach(row -> {
+                            Arrays.stream(row).forEach(System.out::print);
+                            System.out.print("\n");
+        });
+
     }
 
 
     public Grid evolve(){
 
         int[][] newIntMatrix = Arrays.stream(cellMatrix)
-                .map(cell -> Arrays.stream(cell).mapToInt(Cell::evolve).toArray())
+                .map(cells -> Arrays.stream(cells).mapToInt(Cell::evolve).toArray())
                 .toArray(int[][]::new);
 
         return new Grid(newIntMatrix);
