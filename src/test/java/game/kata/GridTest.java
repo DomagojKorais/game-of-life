@@ -54,7 +54,7 @@ public class GridTest {
     public void checkAllNeighbors() {
         Grid grid = new Grid(testMatrix);
 
-        IntBinaryOperator lambda = (int i, int j) -> grid.countAliveNeighbors(testMatrix, i, j);
+        IntBinaryOperator lambda = (int i, int j) -> grid.countAliveNeighbors(i, j);
         matchLambdaResultsAgainstMatrix(lambda, testMatrixNeighbors);
     }
 

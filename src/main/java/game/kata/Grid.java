@@ -20,20 +20,27 @@ class Grid {
         cellMatrix = new Cell[rows][columns];
         for (int i = 0; i < rows; ++i) {
             for (int j = 0; j < columns; ++j) {
-                cellMatrix[i][j] = new Cell(_intMatrix[i][j], countAliveNeighbors(_intMatrix,i,j));
+                cellMatrix[i][j] = new Cell(_intMatrix[i][j], countAliveNeighbors(i,j));
             }
         }
+
+        /*
+        cellMatrix = Arrays.stream(_intMatrix)
+                .map(() -> new Cell())
+                .map(cells -> Arrays.stream(cells).mapToInt(Cell::evolve).toArray())
+                .toArray(Cell[rows][columns]::new);
+        */
     }
 
-    public int countAliveNeighbors(int[][] _intMatrix, int row, int col){
+    public int countAliveNeighbors(int row, int col){
         int aliveNeighbours = 0;
 
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++)
                 if (row+i>=0 && col+j>=0 && row+i < rows && col+j<columns)
-                    aliveNeighbours += _intMatrix[row + i][col + j];
+                    aliveNeighbours += intMatrix[row + i][col + j];
         }
-        aliveNeighbours -= _intMatrix[row][col];
+        aliveNeighbours -= intMatrix[row][col];
 
         return aliveNeighbours;
 
