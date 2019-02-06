@@ -1,5 +1,6 @@
 package game.kata;
 import java.util.Arrays;
+import java.util.stream.IntStream;
 
 class Grid {
     private final int rows;
@@ -17,19 +18,20 @@ class Grid {
         columns = _intMatrix[0].length;
         intMatrix = _intMatrix;
 
+        /*
         cellMatrix = new Cell[rows][columns];
         for (int i = 0; i < rows; ++i) {
             for (int j = 0; j < columns; ++j) {
                 cellMatrix[i][j] = new Cell(_intMatrix[i][j], countAliveNeighbors(i,j));
             }
-        }
+        }*/
 
-        /*
-        cellMatrix = Arrays.stream(_intMatrix)
-                .map(() -> new Cell())
-                .map(cells -> Arrays.stream(cells).mapToInt(Cell::evolve).toArray())
-                .toArray(Cell[rows][columns]::new);
-        */
+        cellMatrix = IntStream.range(0, rows)
+                .mapToObj(i -> IntStream.range(0, columns)
+                        .mapToObj(j -> new Cell(intMatrix[i][j],countAliveNeighbors(i,j)))
+                        .toArray(Cell[]::new))
+                .toArray(Cell[][]::new);
+
     }
 
     public int countAliveNeighbors(int row, int col){
