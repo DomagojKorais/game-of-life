@@ -1,5 +1,6 @@
 package game.kata;
 import java.util.Arrays;
+import java.util.function.IntPredicate;
 import java.util.stream.IntStream;
 
 class Grid {
@@ -17,41 +18,32 @@ class Grid {
         rows = _intMatrix.length;
         columns = _intMatrix[0].length;
         intMatrix = _intMatrix;
-
-        /*
-        cellMatrix = new Cell[rows][columns];
-        for (int i = 0; i < rows; ++i) {
-            for (int j = 0; j < columns; ++j) {
-                cellMatrix[i][j] = new Cell(_intMatrix[i][j], countAliveNeighbors(i,j));
-            }
-        }*/
-
         cellMatrix = IntStream.range(0, rows)
                 .mapToObj(i -> IntStream.range(0, columns)
-                        .mapToObj(j -> new Cell(intMatrix[i][j],countAliveNeighbors(i,j)))
+                        .mapToObj(j -> new Cell(intMatrix[i][j],countAliveNeighbours(i,j)))
                         .toArray(Cell[]::new))
                 .toArray(Cell[][]::new);
 
     }
 
-    public int countAliveNeighbors(int row, int col){
-        int aliveNeighbours = 0;
+    public int countAliveNeighbours(int row, int col){
+        int currentCellState = intMatrix[row][col];
+        IntPredicate rowIdxAcceptable = i -> (row+i>=0 && row+i<rows);
+        IntPredicate colIdxAcceptable = j -> (col+j>=0 && col+j<columns);
 
-        for (int i = -1; i <= 1; i++) {
-            for (int j = -1; j <= 1; j++)
-                if (row+i>=0 && col+j>=0 && row+i < rows && col+j<columns)
-                    aliveNeighbours += intMatrix[row + i][col + j];
-        }
-        aliveNeighbours -= intMatrix[row][col];
+        int aliveNeighbours = IntStream.range(-1, 2)
+                .filter(rowIdxAcceptable)
+                .map(i -> IntStream.range(-1, 2)
+                        .filter(colIdxAcceptable)
+                        .map(j -> intMatrix[row+i][col+j]).sum()).sum();
 
-        return aliveNeighbours;
+        return aliveNeighbours - currentCellState;
 
     }
 
     public Cell getCell(int i, int j){
         return cellMatrix[i][j];
     }
-
 
     public void printGrid(){
         Arrays.stream(getIntMatrix()).forEach(row -> {
