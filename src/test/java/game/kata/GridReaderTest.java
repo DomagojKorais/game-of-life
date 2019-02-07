@@ -28,14 +28,9 @@ public class GridReaderTest {
     @Rule
     public final ExpectedException exceptionGrabber = ExpectedException.none();
 
-    private void invokeParseGridExpectException(String[] lines, String errMsg) {
-        exceptionGrabber.expect(IllegalArgumentException.class);
-        exceptionGrabber.expectMessage(errMsg);
-        reader.parseGrid(lines);
-    }
-
-    private void matchGridWithMatrixAndGen(Grid grid, int[][] mat, int gen) {
+    private void compareMatchWithMatrixAndGen(Match match, int[][] mat, int gen) {
 //        assertEquals(testGrid.generation, gen); // TODO: implement generation functionality in Grid and here
+        Grid grid = match.getGrid();
         assertEquals(grid.getRows(), mat.length);
         assertEquals(grid.getColumns(), mat[0].length);
         boolean is_matching = true;
@@ -45,13 +40,19 @@ public class GridReaderTest {
         assertTrue(is_matching);
     }
 
+    private void invokeParseGridExpectException(String[] lines, String errMsg) {
+        exceptionGrabber.expect(IllegalArgumentException.class);
+        exceptionGrabber.expectMessage(errMsg);
+        reader.parseGrid(lines);
+    }
+
     private void invokeParseGridAndMatch(String[] lines, int[][] mat, int gen) {
-        matchGridWithMatrixAndGen(reader.parseGrid(lines), mat, gen);
+        compareMatchWithMatrixAndGen(reader.parseGrid(lines), mat, gen);
     }
 
     private void invokeParseGridFromFileAndMatch(String resource, int[][] mat, int gen) throws FileNotFoundException {
         String filename = getFileFromResource(resource);
-        matchGridWithMatrixAndGen(reader.parseGridFromFile(filename), mat, gen);
+        compareMatchWithMatrixAndGen(reader.parseGridFromFile(filename), mat, gen);
     }
 
     @Test

@@ -13,6 +13,7 @@ public class Match {
     }
 
     public int getGenerationNumber() { return currentGeneration; }
+    public Grid getGrid() { return currentGrid; }
 
     public void printCurrentMatchStatus() {
         System.out.println("Generation: " + currentGeneration + "\n");

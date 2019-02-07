@@ -72,7 +72,7 @@ public class GridReader {
         return new int[] {rows, columns};
     }
 
-    public Grid parseGrid(String[] lines) throws IllegalArgumentException {
+    public Match parseGrid(String[] lines) throws IllegalArgumentException {
         final Pattern isolateWords = Pattern.compile("\\s+|(?<=\\S)\\b(?=\\S)");
 //        Pattern isolateWords = Pattern.compile("\\s+|\\b(?=[^\\s\\w])|(?<=[^\\s\\w])\\b");
         int generation, rows, columns;
@@ -102,10 +102,10 @@ public class GridReader {
         } catch (NullPointerException e) {
             throw new IllegalArgumentException("Invalid matrix format");
         }
-        return new Grid(finalMatrix);
+        return new Match(new Grid(finalMatrix), generation);
     }
 
-    public Grid parseGridFromFile(String filename) throws FileNotFoundException {
+    public Match parseGridFromFile(String filename) throws FileNotFoundException {
         return parseGrid( readFile(filename) );
     }
 
