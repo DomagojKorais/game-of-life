@@ -38,27 +38,12 @@ public class MyNewCanvas
 
     public static void main(String[] args) throws FileNotFoundException, InterruptedException {
 
-        /*
-        MyNewCanvas canvas = new MyNewCanvas();
-        JFrame frame = new JFrame();
-        int vertexes = 0;
-        // Change this next part later to be dynamic.
-        vertexes = 10;
-        int canvasSize = vertexes * vertexes;
-        frame.setSize(canvasSize, canvasSize);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setContentPane(canvas.view);
-        frame.pack();
-        frame.setLocationByPlatform(true);
-        frame.setVisible(true);
-        */
-        //parte non funzionante
         System.out.println("a");
         GridReader reader = new GridReader();
         String filename = Objects.requireNonNull(Main.class.getClassLoader().getResource("grid.txt")).getFile();
         System.out.println(filename);
         Grid grid = reader.parseGridFromFile(filename);
-        //fine parte non funzionante
+
         int iterations = 10000;
 
         Match match = new Match(iterations, grid);
