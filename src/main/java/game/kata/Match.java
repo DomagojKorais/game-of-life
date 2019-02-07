@@ -2,36 +2,30 @@ package game.kata;
 
 public class Match {
 
-    private int numberOfGenerations;
     private int currentGeneration;
     private Grid currentGrid ;
 
-    Match(int numberOfGenerations, Grid initialSetup) {
-        this.numberOfGenerations = numberOfGenerations;
+    Match(Grid initialSetup) {
         this.currentGeneration = 0;
         this.currentGrid = initialSetup;
-
     }
 
-    public int getGenerations() {
-        return numberOfGenerations;
-    }
-
-    public void printCurrentMatchStatus(){
-        System.out.println("Generation: "+currentGeneration+"\n");
+    public void printCurrentMatchStatus() {
+        System.out.println("Generation: " + currentGeneration + "\n");
         currentGrid.printGrid();
-        //System.out.println("\n");
-
+        System.out.println("\n");
     }
 
-    public void play (){
+    private void play_once() {
+        currentGeneration += 1;
+        currentGrid = currentGrid.evolve();
+    }
 
-        for (int i = 0; i < numberOfGenerations; i++) {
-            this.currentGeneration = i;
+    public void play (int numberOfIterations) {
+        printCurrentMatchStatus();
+        for (int i = 0; i < numberOfIterations; i++) {
+            play_once();
             printCurrentMatchStatus();
-            currentGrid =  currentGrid.evolve();
-            System.out.println("\n");
         }
-
     }
 }
