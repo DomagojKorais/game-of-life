@@ -6,7 +6,10 @@ public class Cell {
     private int status;
     private int aliveNeighbours;
 
-    public Cell (int inception, int neighbours) {
+    public Cell (int inception) {
+        this(inception, 0);
+    }
+    public Cell (int inception, int neighbours) { // DEPRECATED
         if (neighbours>8 | neighbours<0 | inception<0 | inception>1)
             throw new IllegalArgumentException("Invalid number of neighbours or invalid initialization value");
 

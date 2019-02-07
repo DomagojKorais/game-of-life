@@ -2,14 +2,16 @@ package game.kata;
 
 public class Game {
 
-    public static boolean judge (Cell cell){
+    public static boolean judge (Cell cell) { // DEPRECATED
+        return judge(cell, cell.getAliveNeighbours());
+    }
+    public static boolean judge (Cell cell, int aliveNeighbours) {
         boolean deathSentence;
-        final int aliveNeighbors = cell.getAliveNeighbours();
 
         if (cell.getStatus() == 1)
-            deathSentence = (aliveNeighbors < 2 | aliveNeighbors > 3);
+            deathSentence = (aliveNeighbours < 2 | aliveNeighbours > 3);
         else
-            deathSentence = (aliveNeighbors != 3);
+            deathSentence = (aliveNeighbours != 3);
 
         return deathSentence;
     }
