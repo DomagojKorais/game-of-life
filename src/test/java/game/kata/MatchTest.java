@@ -50,7 +50,7 @@ public class MatchTest {
 
     }
     @Test
-    public void play(){
+    public void play() throws InterruptedException {
 
         int NumberOfgenerations = 2;
         int[][] testMatrix = buildTestMatrix();
