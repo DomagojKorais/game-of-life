@@ -18,14 +18,14 @@ public class MatchTest {
         };
    }
 
-//    @Test
-//    public void constructor(){
-//        int NumberOfgenerations = 0;
-//        int[][] testMatrix = buildTestMatrix();
-//        Grid grid = new Grid(testMatrix);
-//        Match match = new Match(NumberOfgenerations,grid);
-//        assertEquals(match.getGenerations(),NumberOfgenerations);
-//    }
+    @Test
+    public void constructor(){
+        int generationNumber = 0;
+        int[][] testMatrix = buildTestMatrix();
+        Grid grid = new Grid(testMatrix);
+        Match match = new Match(grid, generationNumber);
+        assertEquals(match.getGenerationNumber(), generationNumber);
+    }
 
     @Test
     public void printGeneration(){

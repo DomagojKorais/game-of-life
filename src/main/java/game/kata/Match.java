@@ -5,10 +5,14 @@ public class Match {
     private int currentGeneration;
     private Grid currentGrid ;
 
-    Match(Grid initialSetup) {
-        this.currentGeneration = 0;
-        this.currentGrid = initialSetup;
+    Match(Grid initialSetup) { this(initialSetup, 0); }
+
+    Match(Grid initialSetup, int generation) {
+        currentGeneration = generation;
+        currentGrid = initialSetup;
     }
+
+    public int getGenerationNumber() { return currentGeneration; }
 
     public void printCurrentMatchStatus() {
         System.out.println("Generation: " + currentGeneration + "\n");
