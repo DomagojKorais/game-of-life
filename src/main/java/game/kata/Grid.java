@@ -17,19 +17,19 @@ class Grid {
     public int getColumns() { return columns; }
 //    private int[][] getIntMatrix(){return intMatrix;}
 
-    public Grid(int nrows, int ncolumns, Cell[][] cellMat) {
-        rows = nrows;
-        columns = ncolumns;
+    public Grid(Cell[][] cellMat) {
+        rows = cellMat.length;
+        columns = cellMat[0].length;
         cellMatrix = cellMat;
     }
+
     public Grid(int[][] intMatrix) { // DEPRECATED, DANGEROUS EDGE CASES
-        this(intMatrix.length, intMatrix[0].length,
-                Arrays.stream(intMatrix)
+        this(Arrays.stream(intMatrix)
                         .map(row -> Arrays.stream(row)
                                 .mapToObj(Cell::new)
                                 .toArray(Cell[]::new))
                         .toArray(Cell[][]::new)
-                );
+        );
     }
 //    public Grid(int[][] _intMatrix) { // DEPRECATED, ALTERNATIVE IMPLEMENTATION ABOVE
 //        rows = _intMatrix.length;
@@ -68,6 +68,7 @@ class Grid {
         });
 
     }
+
 
     int[][] toExtendedIntMatrix() {
         int[] zeros = new int[columns+2];
@@ -111,7 +112,7 @@ class Grid {
 //                        (int j) -> (judge(cellMatrix[i][j], neighbourCountMatrix[i][j]) ? 0 : 1)
 //                ).toArray()
 //        ).toArray(int[][]::new);
-        return new Grid(rows, columns, newCellMatrix);
+        return new Grid(newCellMatrix);
     }
 
 //    public Grid evolve(){     // REPLACED BY THE ABOVE IMPLEMENTATION, WHICH USES ITS OWN NEIGHBOUR CALCULATION

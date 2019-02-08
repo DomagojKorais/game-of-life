@@ -102,7 +102,7 @@ public class GridReader {
         } catch (NullPointerException e) {
             throw new IllegalArgumentException("Invalid matrix format");
         }
-        return new Match(new Grid(rows, columns, finalMatrix), generation);
+        return new Match(new Grid(finalMatrix), generation);
     }
 
     public Match parseGridFromFile(String filename) throws FileNotFoundException {
