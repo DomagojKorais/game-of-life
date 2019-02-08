@@ -1,7 +1,5 @@
 package game.kata;
 
-//import static game.kata.Game.judge;
-
 import static game.kata.Game.judge;
 
 public class Cell {

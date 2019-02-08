@@ -58,14 +58,14 @@ class Grid {
        return aliveNeighbours - currentCellState;
     }
 
-
+    /*
     int[][] getNeighbourCountMatrix(){
         return IntStream.range(0, rows).mapToObj((int i) ->
                 IntStream.range(0, columns)
                 .map((int j) -> countAliveNeighbours(i,j))
                 .toArray())
                 .toArray(int[][]::new);
-    }
+    }*/
 
 
     public Grid evolve() {
