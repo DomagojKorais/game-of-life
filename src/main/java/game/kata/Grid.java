@@ -12,11 +12,9 @@ class Grid {
     private final int rows;
     private final int columns;
     private final Cell[][] cellMatrix;
-//    private final int[][] intMatrix;
 
     public int getRows()    { return rows; }
     public int getColumns() { return columns; }
-//    private int[][] getIntMatrix(){return intMatrix;}
 
     public Grid(Cell[][] cellMat) {
         rows = cellMat.length;
@@ -24,7 +22,7 @@ class Grid {
         cellMatrix = cellMat;
     }
 
-    public Grid(int[][] intMatrix) { // DEPRECATED, DANGEROUS EDGE CASES
+    public Grid(int[][] intMatrix) { // JUST FOR TESTS
         this(Arrays.stream(intMatrix)
                         .map(row -> Arrays.stream(row)
                                 .mapToObj(Cell::new)
@@ -32,19 +30,6 @@ class Grid {
                         .toArray(Cell[][]::new)
         );
     }
-
-//    public Grid(int[][] _intMatrix) { // DEPRECATED, ALTERNATIVE IMPLEMENTATION ABOVE
-//        rows = _intMatrix.length;
-//        columns = _intMatrix[0].length;
-////        intMatrix = _intMatrix;
-//        cellMatrix = IntStream.range(0, rows)
-//                .mapToObj(i -> IntStream.range(0, columns)
-////                        .mapToObj(j -> new Cell(intMatrix[i][j],countAliveNeighbours(i,j)))
-//                        .mapToObj(j -> new Cell(_intMatrix[i][j]))
-//                        .toArray(Cell[]::new))
-//                .toArray(Cell[][]::new);
-//    }
-
 
     public Cell getCell(int i, int j){
         return cellMatrix[i][j];
@@ -58,21 +43,6 @@ class Grid {
 
     }
 
-  /*
-    int[][] toExtendedIntMatrix() {
-        int[] zeros = new int[columns+2];
-        Function<Cell[],int[]> processRow = (Cell[] cell_row) ->
-                IntStream.concat( IntStream.concat(
-                        IntStream.of(0),
-                        Arrays.stream(cell_row).mapToInt(Cell::getStatus) ),
-                        IntStream.of(0)
-                ).toArray();
-        return Stream.concat( Stream.concat(
-                Stream.of(zeros),
-                Arrays.stream(cellMatrix).map(processRow) ),
-                Stream.of(zeros)
-        ).toArray(int[][]::new);
-    }*/
 
     public int countAliveNeighbours(int row, int col) {       // THIS HAS BEEN TRANSFORMED INTO THE getNeighbourCountMatrix() METHOD BELOW
         int currentCellState = this.getCell(row,col).getStatus();
@@ -99,25 +69,12 @@ class Grid {
 
 
     public Grid evolve() {
-        final int[][] neighbourCountMatrix = getNeighbourCountMatrix();
         Cell[][] newCellMatrix = IntStream.range(0, rows).mapToObj((int i) ->
-                IntStream.range(0, columns).mapToObj(
-                        (int j) -> new Cell(judge(cellMatrix[i][j], neighbourCountMatrix[i][j]) ? 0 : 1))
+                IntStream.range(0, columns)
+                        .mapToObj((int j) -> cellMatrix[i][j].evolve(countAliveNeighbours(i,j)))// Cell( ? 0 : 1))//judge(cellMatrix[i][j], neighbourCountMatrix[i][j]) ? 0 : 1))
                         .toArray(Cell[]::new))
                 .toArray(Cell[][]::new);
-//        int[][] newMatrix = IntStream.range(0, rows).mapToObj((int i) ->      // old int variant
-//                IntStream.range(0, columns).map(
-//                        (int j) -> (judge(cellMatrix[i][j], neighbourCountMatrix[i][j]) ? 0 : 1)
-//                ).toArray()
-//        ).toArray(int[][]::new);
         return new Grid(newCellMatrix);
     }
 
-//    public Grid evolve(){     // REPLACED BY THE ABOVE IMPLEMENTATION, WHICH USES ITS OWN NEIGHBOUR CALCULATION
-//        int[][] newIntMatrix = Arrays.stream(cellMatrix)
-//                .map(cells -> Arrays.stream(cells).mapToInt(Cell::evolve).toArray())
-//                .toArray(int[][]::new);
-//
-//        return new Grid(newIntMatrix);
-//    }
 }
