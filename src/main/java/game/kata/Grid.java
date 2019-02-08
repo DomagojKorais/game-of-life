@@ -2,6 +2,7 @@ package game.kata;
 import java.util.Arrays;
 import java.util.function.Function;
 import java.util.function.IntBinaryOperator;
+import java.util.function.IntPredicate;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -31,6 +32,7 @@ class Grid {
                         .toArray(Cell[][]::new)
         );
     }
+
 //    public Grid(int[][] _intMatrix) { // DEPRECATED, ALTERNATIVE IMPLEMENTATION ABOVE
 //        rows = _intMatrix.length;
 //        columns = _intMatrix[0].length;
@@ -43,19 +45,6 @@ class Grid {
 //                .toArray(Cell[][]::new);
 //    }
 
-//    public int countAliveNeighbours(int row, int col) {       // THIS HAS BEEN TRANSFORMED INTO THE getNeighbourCountMatrix() METHOD BELOW
-//        int currentCellState = intMatrix[row][col];
-//        IntPredicate rowIdxAcceptable = i -> (row+i>=0 && row+i<rows);
-//        IntPredicate colIdxAcceptable = j -> (col+j>=0 && col+j<columns);
-//
-//        int aliveNeighbours = IntStream.range(-1, 2)
-//                .filter(rowIdxAcceptable)
-//                .map(i -> IntStream.range(-1, 2)
-//                        .filter(colIdxAcceptable)
-//                        .map(j -> intMatrix[row+i][col+j]).sum()).sum();
-//
-//        return aliveNeighbours - currentCellState;
-//    }
 
     public Cell getCell(int i, int j){
         return cellMatrix[i][j];
@@ -69,7 +58,7 @@ class Grid {
 
     }
 
-
+  /*
     int[][] toExtendedIntMatrix() {
         int[] zeros = new int[columns+2];
         Function<Cell[],int[]> processRow = (Cell[] cell_row) ->
@@ -83,30 +72,39 @@ class Grid {
                 Arrays.stream(cellMatrix).map(processRow) ),
                 Stream.of(zeros)
         ).toArray(int[][]::new);
+    }*/
+
+    public int countAliveNeighbours(int row, int col) {       // THIS HAS BEEN TRANSFORMED INTO THE getNeighbourCountMatrix() METHOD BELOW
+        int currentCellState = this.getCell(row,col).getStatus();
+        IntPredicate rowIdxAcceptable = i -> (row+i>=0 && row+i<rows);
+        IntPredicate colIdxAcceptable = j -> (col+j>=0 && col+j<columns);
+
+        int aliveNeighbours = IntStream.range(-1, 2)
+                .filter(rowIdxAcceptable)
+                .map(i -> IntStream.range(-1, 2)
+                       .filter(colIdxAcceptable)
+                       .map(j -> this.getCell(row+i,col+j).getStatus()).sum()).sum();
+
+       return aliveNeighbours - currentCellState;
     }
 
+
     int[][] getNeighbourCountMatrix(){
-        int[][] extendedIntMatrix = toExtendedIntMatrix();
-        IntBinaryOperator cellNeighbors = (int row, int col) -> {
-            int aliveNeighbours = IntStream.range(0, 3)
-                    .map(i -> IntStream.range(0, 3)
-                            .map(j -> extendedIntMatrix[row+i][col+j]).sum()).sum();
-            return aliveNeighbours - extendedIntMatrix[row+1][col+1];
-        };
-        return IntStream.range(0, rows).mapToObj( (int i) ->
+        return IntStream.range(0, rows).mapToObj((int i) ->
                 IntStream.range(0, columns)
-                .map((int j) -> cellNeighbors.applyAsInt(i,j))
-                .toArray()
-        ).toArray(int[][]::new);
+                .map((int j) -> countAliveNeighbours(i,j))
+                .toArray())
+                .toArray(int[][]::new);
     }
+
 
     public Grid evolve() {
         final int[][] neighbourCountMatrix = getNeighbourCountMatrix();
         Cell[][] newCellMatrix = IntStream.range(0, rows).mapToObj((int i) ->
                 IntStream.range(0, columns).mapToObj(
-                        (int j) -> new Cell(judge(cellMatrix[i][j], neighbourCountMatrix[i][j]) ? 0 : 1)
-                ).toArray(Cell[]::new)
-        ).toArray(Cell[][]::new);
+                        (int j) -> new Cell(judge(cellMatrix[i][j], neighbourCountMatrix[i][j]) ? 0 : 1))
+                        .toArray(Cell[]::new))
+                .toArray(Cell[][]::new);
 //        int[][] newMatrix = IntStream.range(0, rows).mapToObj((int i) ->      // old int variant
 //                IntStream.range(0, columns).map(
 //                        (int j) -> (judge(cellMatrix[i][j], neighbourCountMatrix[i][j]) ? 0 : 1)

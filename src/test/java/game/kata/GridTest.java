@@ -82,6 +82,7 @@ public class GridTest {
                               "00000000\n",outContent.toString());
     }
 
+    /*
     @Test
     public void checkExtendedMatrix() {
         Grid grid = new Grid(testMatrix);
@@ -94,7 +95,7 @@ public class GridTest {
                 {0,0,0,0,0,0,0,0,0,0,} };
         IntBinaryOperator lambda = (int i, int j) -> testExtMat[i][j];
         matchLambdaResultsAgainstMatrix(lambda, grid.toExtendedIntMatrix());
-    }
+    }*/
 
     @Test
     public void checkNewNeighbourMatrixMethod() {
