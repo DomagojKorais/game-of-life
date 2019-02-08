@@ -29,7 +29,7 @@ public class GridReaderTest {
     public final ExpectedException exceptionGrabber = ExpectedException.none();
 
     private void compareMatchWithMatrixAndGen(Match match, int[][] mat, int gen) {
-//        assertEquals(testGrid.generation, gen); // TODO: implement generation functionality in Grid and here
+        assertEquals(match.getGenerationNumber(), gen);
         Grid grid = match.getGrid();
         assertEquals(grid.getRows(), mat.length);
         assertEquals(grid.getColumns(), mat[0].length);

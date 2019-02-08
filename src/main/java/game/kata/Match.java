@@ -5,8 +5,6 @@ public class Match {
     private int currentGeneration;
     private Grid currentGrid ;
 
-    Match(Grid initialSetup) { this(initialSetup, 0); } // deprecated
-
     Match(Grid initialSetup, int generation) {
         currentGeneration = generation;
         currentGrid = initialSetup;
@@ -24,7 +22,6 @@ public class Match {
     private void play_once() {
         currentGeneration += 1;
         currentGrid = currentGrid.evolve();
-//        currentGrid = currentGrid.evolve_here(); // switch the previous line to this to switch to the new system
     }
 
     public void play (int numberOfIterations) {

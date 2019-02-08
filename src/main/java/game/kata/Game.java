@@ -2,9 +2,9 @@ package game.kata;
 
 public class Game {
 
-    public static boolean judge (Cell cell) { // DEPRECATED
-        return judge(cell, cell.getAliveNeighbours());
-    }
+//    public static boolean judge (Cell cell) { // DEPRECATED
+//        return judge(cell, cell.getAliveNeighbours());
+//    }
     public static boolean judge (Cell cell, int aliveNeighbours) {
         boolean deathSentence;
 

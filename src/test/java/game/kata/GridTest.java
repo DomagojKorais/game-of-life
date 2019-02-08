@@ -50,19 +50,21 @@ public class GridTest {
         assertEquals(grid.getColumns(), testMatrix[0].length);
     }
 
-    @Test
-    public void checkAllNeighbors() {
-        Grid grid = new Grid(testMatrix);
-
-        IntBinaryOperator lambda = grid::countAliveNeighbours;
-        matchLambdaResultsAgainstMatrix(lambda, testMatrixNeighbors);
-    }
+//    @Test
+//    public void checkAllNeighbors() { // NOT RELEVANT ANYMORE
+//        Grid grid = new Grid(testMatrix);
+//
+//        IntBinaryOperator lambda = grid::countAliveNeighbours;
+//        matchLambdaResultsAgainstMatrix(lambda, testMatrixNeighbors);
+//    }
 
     @Test
     public void checkEvolvedContent() {
         Grid grid = new Grid(testMatrix);
         Grid newGrid = grid.evolve();
         IntBinaryOperator lambda = (int i, int j) -> newGrid.getCell(i,j).getStatus();
+        grid.printGrid();
+        newGrid.printGrid();
         matchLambdaResultsAgainstMatrix(lambda, testMatrixEvolved);
     }
 
@@ -101,13 +103,5 @@ public class GridTest {
         int[][] neighbourMat = grid.getNeighbourCountMatrix();
 //        System.out.println(Arrays.deepToString(neighbourMat));
         matchLambdaResultsAgainstMatrix(lambda, neighbourMat);
-    }
-
-    @Test
-    public void checkNewEvolveMethod() {
-        Grid grid = new Grid(testMatrix);
-        Grid newGrid = grid.evolve_here();
-        IntBinaryOperator lambda = (int i, int j) -> newGrid.getCell(i,j).getStatus();
-        matchLambdaResultsAgainstMatrix(lambda, testMatrixEvolved);
     }
  }

@@ -7,29 +7,34 @@ import static org.junit.Assert.*;
 public class GameTest {
 
     @Test
-    public void underPopulation(){
-        Cell cell = new Cell(1,1);
-        boolean deathSentence = judge(cell);
+    public void underPopulation() {
+//        Cell cell = new Cell(1,1);
+        Cell cell = new Cell(1);
+        boolean deathSentence = judge(cell,1);
         assertTrue(deathSentence);
     }
 
     @Test
-    public void balancedPopulation(){
-        Cell cell = new Cell(1,3);
-        boolean deathSentence = judge(cell);
+    public void balancedPopulation() {
+//        Cell cell = new Cell(1,3);
+        Cell cell = new Cell(1);
+        boolean deathSentence = judge(cell,3);
         assertFalse(deathSentence);
     }
 
     @Test
-    public void overPopulation(){
-        Cell cell = new Cell(1,4);
-        boolean deathSentence = judge(cell);
+    public void overPopulation() {
+//        Cell cell = new Cell(1,4);
+        Cell cell = new Cell(1);
+        boolean deathSentence = judge(cell,4);
         assertTrue(deathSentence);
     }
+
     @Test
-    public void newBorn(){
-        Cell cell = new Cell(0,3);
-        boolean deathSentence = judge(cell);
+    public void newBorn() {
+//        Cell cell = new Cell(0,3);
+        Cell cell = new Cell(0);
+        boolean deathSentence = judge(cell,3);
         assertFalse(deathSentence);
     }
 

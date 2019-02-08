@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public class GridReader {
 
-    private static final char aliveChar = '*';
+    private static final char aliveChar = '*'; // TODO: maybe transform this to a <int,Cell> map?
     private static final char deadChar  = '.';
     private static final int  aliveInt  = 1;
     private static final int  deadInt   = 0;
@@ -93,16 +93,16 @@ public class GridReader {
                 throw new IllegalArgumentException("Number of matrix columns does not consistently match the declaration");
         }
 
-        int[][] finalMatrix;
+        Cell[][] finalMatrix;
         try {
-            Function<String,int[]> translateRow =
-                    (String line) -> line.chars().map(translationParseMap::get).toArray();
+            Function<String,Cell[]> translateRow =
+                    (String line) -> line.chars().mapToObj((int i) -> new Cell(translationParseMap.get(i))).toArray(Cell[]::new);
             finalMatrix =
-                    Arrays.stream(lines).skip(2).map(translateRow).toArray(int[][]::new);
+                    Arrays.stream(lines).skip(2).map(translateRow).toArray(Cell[][]::new);
         } catch (NullPointerException e) {
             throw new IllegalArgumentException("Invalid matrix format");
         }
-        return new Match(new Grid(finalMatrix), generation);
+        return new Match(new Grid(rows, columns, finalMatrix), generation);
     }
 
     public Match parseGridFromFile(String filename) throws FileNotFoundException {

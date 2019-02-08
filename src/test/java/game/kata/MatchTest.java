@@ -29,10 +29,9 @@ public class MatchTest {
 
     @Test
     public void printGeneration(){
-        int NumberOfgenerations = 10;
         int[][] testMatrix = buildTestMatrix();
         Grid grid = new Grid(testMatrix);
-        Match match = new Match(grid);
+        Match match = new Match(grid, 0);
         //Intercept output
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
@@ -52,7 +51,7 @@ public class MatchTest {
         int numIterations = 2;
         int[][] testMatrix = buildTestMatrix();
         Grid grid = new Grid(testMatrix);
-        Match match = new Match(grid);
+        Match match = new Match(grid, 0);
         //Intercept output
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
