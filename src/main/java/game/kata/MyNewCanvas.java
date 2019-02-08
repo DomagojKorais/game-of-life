@@ -12,16 +12,19 @@ public class MyNewCanvas
 {
     JLabel view;
     BufferedImage surface;
-    Random random = new Random();
+
 
     public MyNewCanvas()
     {
-        surface = new BufferedImage(1000,1000,BufferedImage.TYPE_INT_RGB);
+        int dim = 500;
+        surface = new BufferedImage(dim,dim,BufferedImage.TYPE_INT_RGB);
         view = new JLabel(new ImageIcon(surface));
         Graphics g = surface.getGraphics();
-        g.setColor(Color.red);
-        g.fillRect(0,0,1000,1000);
-        g.setColor(Color.red);
+        Color grey = new Color(125, 125, 125 );
+        g.setColor(grey);
+
+        g.fillRect(0,0,dim,dim);
+        g.setColor(Color.yellow);
 
         g.dispose();
 
@@ -58,16 +61,17 @@ public class MyNewCanvas
 
 
     public void drawGrid(int [][] squares, Graphics g){
-        int width = 1000/squares.length;
+        int width = 500/squares.length ;
+        int offset = (500-width*squares.length)/2;
 
         for (int j = 0; j <squares[0].length ; j++) {
             for (int i = 0; i < squares.length; i++) {
                 if (squares[i][j] == 1) {
-                    g.setColor(Color.black);
+                    g.setColor(Color.orange);
                 } else {
-                    g.setColor(Color.white);
+                    g.setColor(Color.black);
                 }
-                g.fillRect(j * width, i * width, width, width);
+                g.fillRect(offset+j * width, offset+i * width, width, width);
             }
         }
 

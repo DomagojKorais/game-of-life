@@ -7,7 +7,7 @@ public class Match {
     private int numberOfGenerations;
     private int currentGeneration;
     private Grid currentGrid ;
-    JFrame frame = new JFrame();
+    JFrame frame = new JFrame("Game of Life");
 
     Match(int numberOfGenerations, Grid initialSetup) {
         this.numberOfGenerations = numberOfGenerations;
@@ -25,18 +25,12 @@ public class Match {
     public void printCurrentMatchStatus(){
         System.out.println("Generation: "+currentGeneration+"\n");
         currentGrid.printGrid();
-
-
-
-
-        //System.out.println("\n");
-
     }
 
     public void play () throws InterruptedException {
 
         MyNewCanvas displayMatch = new MyNewCanvas();
-        JFrame frame = new JFrame();
+        //JFrame frame = new JFrame();
         int canvasSizeColumns=currentGrid.getColumns();
         int canvasSizeRows=currentGrid.getRows();
         frame.setSize(canvasSizeColumns, canvasSizeRows);
