@@ -2,9 +2,14 @@ package game.kata;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.function.Function;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 public class GridReader {
 
@@ -20,17 +25,9 @@ public class GridReader {
             }}
     );
 
-    String[] readFile(String path) throws FileNotFoundException {
-        Scanner scanner = new Scanner(new File(path));
-        ArrayList<String> validLines = new ArrayList<>();
-        while (scanner.hasNextLine()) {
-            String currentLine = scanner.nextLine().trim();
-            if (currentLine.length() > 0)
-                validLines.add(currentLine);
-        }
-        String[] retval = new String[validLines.size()];
-        validLines.toArray(retval);
-        return retval;
+    String[] readFile(String path) throws IOException {
+        Stream<String> flines = Files.lines(Paths.get(path));
+        return flines.map(String::trim).filter(s -> !s.isEmpty()).toArray(String[]::new);
     }
 
     private int parseGenerationRow(String[] line_words) throws IllegalArgumentException {
@@ -105,7 +102,7 @@ public class GridReader {
         return new Match(new Grid(finalMatrix), generation);
     }
 
-    public Match parseGridFromFile(String filename) throws FileNotFoundException {
+    public Match parseGridFromFile(String filename) throws IOException {
         return parseGrid( readFile(filename) );
     }
 

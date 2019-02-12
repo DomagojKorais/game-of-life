@@ -4,7 +4,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -50,13 +50,13 @@ public class GridReaderTest {
         compareMatchWithMatrixAndGen(reader.parseGrid(lines), mat, gen);
     }
 
-    private void invokeParseGridFromFileAndMatch(String resource, int[][] mat, int gen) throws FileNotFoundException {
+    private void invokeParseGridFromFileAndMatch(String resource, int[][] mat, int gen) throws IOException {
         String filename = getFileFromResource(resource);
         compareMatchWithMatrixAndGen(reader.parseGridFromFile(filename), mat, gen);
     }
 
     @Test
-    public void readFileTest() throws NullPointerException, FileNotFoundException {
+    public void readFileTest() throws NullPointerException, IOException {
         String filename = getFileFromResource("sparse_lines.txt");
         assertArrayEquals(reader.readFile(filename),
                 new String[] {"Line 1", "Line 2", "Line 3"});
@@ -148,7 +148,7 @@ public class GridReaderTest {
     }
 
     @Test
-    public void fullParsingCheck() throws FileNotFoundException {
+    public void fullParsingCheck() throws IOException {
         int[][] testMat = new int[][] {{0,0,0,0,0,0,0,0},
                                        {0,0,0,0,1,0,0,0},
                                        {0,0,0,1,1,0,0,0},
@@ -157,7 +157,7 @@ public class GridReaderTest {
     }
 
     @Test
-    public void allDeadTest() throws FileNotFoundException {
+    public void allDeadTest() throws IOException {
         int[][] testMat = new int[4][8];
         for (int[] row : testMat)
             Arrays.fill(row, 0); // only for consistency, Java guarantees initialization to zero
@@ -166,7 +166,7 @@ public class GridReaderTest {
     }
 
     @Test
-    public void allAliveTest() throws FileNotFoundException {
+    public void allAliveTest() throws IOException {
         int[][] testMat = new int[4][8];
         for (int[] row : testMat)
             Arrays.fill(row, 1);
