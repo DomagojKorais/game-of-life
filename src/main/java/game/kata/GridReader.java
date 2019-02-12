@@ -55,7 +55,7 @@ public class GridReader {
 
     private int[] parseDimensionRow(String[] line_words) throws IllegalArgumentException {
         final IllegalArgumentException exc = new IllegalArgumentException(
-                "Wrong matrix dimension specification format. Format: '<num_rows> <num_columns>' Numbers must be >= 0" );
+                "Wrong matrix dimension specification format. Format: '<num_rows> <num_columns>' Numbers must be > 0" );
         int rows, columns;
 
         if (line_words.length != 2)
@@ -66,7 +66,7 @@ public class GridReader {
         }
         catch (NumberFormatException e) { throw exc; }
 
-        if (rows < 0 | columns < 0)
+        if (rows <= 0 | columns <= 0)
             throw exc;
 
         return new int[] {rows, columns};

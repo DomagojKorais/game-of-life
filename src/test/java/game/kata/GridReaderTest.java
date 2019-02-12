@@ -16,7 +16,7 @@ public class GridReaderTest {
 
     private static final String msgErrShort         = "Input too short";
     private static final String msgErrGeneration    = "Wrong generation number specification format. Format: 'Generation <num>: [possibly comments]'";
-    private static final String msgErrDimensions    = "Wrong matrix dimension specification format. Format: '<num_rows> <num_columns>' Numbers must be >= 0";
+    private static final String msgErrDimensions    = "Wrong matrix dimension specification format. Format: '<num_rows> <num_columns>' Numbers must be > 0";
     private static final String msgErrRowMismatch   = "Number of matrix rows does not match the declaration";
     private static final String msgErrColMismatch   = "Number of matrix columns does not consistently match the declaration";
     private static final String msgErrMatrixFmt     = "Invalid matrix format";
@@ -107,6 +107,18 @@ public class GridReaderTest {
     @Test
     public void parseGrid_sizeDeclarationFormatException() {
         String[] testLines = new String[] {"GeNeRaTioN     1:", "1 X", "*"};
+        invokeParseGridExpectException(testLines, msgErrDimensions);
+    }
+
+    @Test
+    public void parseGrid_sizeDeclarationZeroRowsException() {
+        String[] testLines = new String[] {"GeNeRaTioN     1:", "0 1"};
+        invokeParseGridExpectException(testLines, msgErrDimensions);
+    }
+
+    @Test
+    public void parseGrid_sizeDeclarationZeroColumnsException() {
+        String[] testLines = new String[] {"GeNeRaTioN     1:", "1 0", ""};
         invokeParseGridExpectException(testLines, msgErrDimensions);
     }
 
