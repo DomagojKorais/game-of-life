@@ -7,6 +7,7 @@ import org.junit.rules.ExpectedException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.*;
 
@@ -15,8 +16,8 @@ public class GridReaderTest {
     private static final GridReader reader = new GridReader();
 
     private static final String msgErrShort         = "Input too short";
-    private static final String msgErrGeneration    = "Wrong generation number specification format. Format: 'Generation <num>: [possibly comments]'";
-    private static final String msgErrDimensions    = "Wrong matrix dimension specification format. Format: '<num_rows> <num_columns>' Numbers must be > 0";
+    private static final String msgErrGeneration    = "Wrong generation number specification format. It must be the 1st non-empty line. Format: 'Generation <num>: [optional comments]'";
+    private static final String msgErrDimensions    = "Wrong matrix dimension specification format. It must be the 2nd non-empty line. Format: '<num_rows> <num_columns>' Numbers must be > 0";
     private static final String msgErrRowMismatch   = "Number of matrix rows does not match the declaration";
     private static final String msgErrColMismatch   = "Number of matrix columns does not consistently match the declaration";
     private static final String msgErrMatrixFmt     = "Invalid matrix format";
@@ -40,111 +41,129 @@ public class GridReaderTest {
         assertTrue(is_matching);
     }
 
-    private void invokeParseGridExpectException(String[] lines, String errMsg) {
+    private void invokeParseExpectException(String[] lines, String errMsg) {
         exceptionGrabber.expect(IllegalArgumentException.class);
         exceptionGrabber.expectMessage(errMsg);
-        reader.parseGrid(lines);
+        reader.parse(Arrays.stream(lines));
     }
 
-    private void invokeParseGridAndMatch(String[] lines, int[][] mat, int gen) {
-        compareMatchWithMatrixAndGen(reader.parseGrid(lines), mat, gen);
+    private void invokeParseAndMatch(String[] lines, int[][] mat, int gen) {
+        compareMatchWithMatrixAndGen(reader.parse(Arrays.stream(lines)), mat, gen);
     }
 
-    private void invokeParseGridFromFileAndMatch(String resource, int[][] mat, int gen) throws IOException {
+    private void invokeParseFromFileAndMatch(String resource, int[][] mat, int gen) throws IOException {
         String filename = getFileFromResource(resource);
-        compareMatchWithMatrixAndGen(reader.parseGridFromFile(filename), mat, gen);
+        compareMatchWithMatrixAndGen(reader.parseFromFile(filename), mat, gen);
     }
 
     @Test
     public void readFileTest() throws NullPointerException, IOException {
         String filename = getFileFromResource("sparse_lines.txt");
-        assertArrayEquals(reader.readFile(filename),
-                new String[] {"Line 1", "Line 2", "Line 3"});
+        assertArrayEquals(reader.readFile(filename).toArray(String[]::new),
+                new String[] {"", "", "Line 1", "", "  Line 2   ", "    ", "", "", "", "Line 3"});
     }
 
     @Test
-    public void parseGrid_shortException() {
+    public void parse_shortException() {
         String[] testLines = new String[] {"Generation 1:"};
-        invokeParseGridExpectException(testLines, msgErrShort);
+        invokeParseExpectException(testLines, msgErrShort);
     }
 
     @Test
-    public void parseGrid_generationException() {
+    public void parse_generationException() {
         String[] testLines = new String[] {"DEADBEEF 1:", "1 1", "*"};
-        invokeParseGridExpectException(testLines, msgErrGeneration);
+        invokeParseExpectException(testLines, msgErrGeneration);
     }
 
     @Test
-    public void parseGrid_generationNumberException() {
+    public void parse_generationNumberException() {
         String[] testLines = new String[] {"GeNeRaTioN DEADBEEF:", "1 1", "*"};
-        invokeParseGridExpectException(testLines, msgErrGeneration);
+        invokeParseExpectException(testLines, msgErrGeneration);
     }
 
     @Test
-    public void parseGrid_generationSneakyException() {
+    public void parse_generationSneakyException() {
         String[] testLines = new String[] {"GeNeRaTioN 1':", "1 1", "*"};
-        invokeParseGridExpectException(testLines, msgErrGeneration);
+        invokeParseExpectException(testLines, msgErrGeneration);
     }
 
     @Test
-    public void parseGrid_generationOptionalColon() {
+    public void parse_generationOptionalColon() {
         String[] testLines = new String[] {"GeNeRaTioN 1", "1 1", "*"};
-        invokeParseGridAndMatch(testLines, new int[][] {{1}}, 1);
+        invokeParseAndMatch(testLines, new int[][] {{1}}, 1);
     }
 
     @Test
-    public void parseGrid_sizeDeclarationException1() {
+    public void parse_sizeDeclarationException1() {
         String[] testLines = new String[] {"GeNeRaTioN     1:", "1", "*"};
-        invokeParseGridExpectException(testLines, msgErrDimensions);
+        invokeParseExpectException(testLines, msgErrDimensions);
    }
 
     @Test
-    public void parseGrid_sizeDeclarationException3() {
+    public void parse_sizeDeclarationException3() {
         String[] testLines = new String[] {"GeNeRaTioN     1:", "1 1;", "*"};
-        invokeParseGridExpectException(testLines, msgErrDimensions);
+        invokeParseExpectException(testLines, msgErrDimensions);
    }
 
     @Test
-    public void parseGrid_sizeDeclarationFormatException() {
+    public void parse_sizeDeclarationFormatException() {
         String[] testLines = new String[] {"GeNeRaTioN     1:", "1 X", "*"};
-        invokeParseGridExpectException(testLines, msgErrDimensions);
+        invokeParseExpectException(testLines, msgErrDimensions);
     }
 
     @Test
-    public void parseGrid_sizeDeclarationZeroRowsException() {
+    public void parse_sizeDeclarationZeroRowsException() {
         String[] testLines = new String[] {"GeNeRaTioN     1:", "0 1"};
-        invokeParseGridExpectException(testLines, msgErrDimensions);
+        invokeParseExpectException(testLines, msgErrDimensions);
     }
 
     @Test
-    public void parseGrid_sizeDeclarationZeroColumnsException() {
+    public void parse_sizeDeclarationZeroColumnsException() {
         String[] testLines = new String[] {"GeNeRaTioN     1:", "1 0", ""};
-        invokeParseGridExpectException(testLines, msgErrDimensions);
+        invokeParseExpectException(testLines, msgErrDimensions);
     }
 
     @Test
-    public void parseGrid_matrixRowsMismatchException() {
+    public void parse_matrixRowsMismatchException() {
         String[] testLines = new String[] {"GeNeRaTioN     1:", "2 1", "*"};
-        invokeParseGridExpectException(testLines, msgErrRowMismatch);
+        invokeParseExpectException(testLines, msgErrRowMismatch);
     }
 
     @Test
-    public void parseGrid_matrixColumnsMismatchException() {
+    public void parse_matrixColumnsMismatchException() {
         String[] testLines = new String[] {"GeNeRaTioN     1:", "1 2", "*"};
-        invokeParseGridExpectException(testLines, msgErrColMismatch);
+        invokeParseExpectException(testLines, msgErrColMismatch);
     }
 
     @Test
-    public void parseGrid_matrixFormatException() {
+    public void parse_matrixFormatException() {
         String[] testLines = new String[] {"GeNeRaTioN     1:", "1 2", "HA"};
-        invokeParseGridExpectException(testLines, msgErrMatrixFmt);
+        invokeParseExpectException(testLines, msgErrMatrixFmt);
     }
 
     @Test
-    public void parseGrid_genericParsingCheck() {
-        String[] testLines = new String[] {"GeNeRaTioN     0:", "1  2", ".*"};
+    public void parse_genericParsingCheck() {
+        String[] testLines = new String[] {
+                "Generation 0:",
+                "1 2",
+                ".*"
+        };
         int[][] testMat = new int[][] {{0,1}};
-        invokeParseGridAndMatch(testLines, testMat, 0);
+        invokeParseAndMatch(testLines, testMat, 0);
+    }
+
+    @Test
+    public void parse_funkyParsingCheck() {
+        String[] testLines = new String[] {
+                "",
+                "   GeNeRaTioN   1337  :    catch-it-all no-exception test",
+                "   2  2  ",
+                " .*  ",
+                "    *.",
+                ""
+        };
+        int[][] testMat = new int[][] {{0,1},{1,0}};
+        invokeParseAndMatch(testLines, testMat, 1337);
     }
 
     @Test
@@ -153,7 +172,7 @@ public class GridReaderTest {
                                        {0,0,0,0,1,0,0,0},
                                        {0,0,0,1,1,0,0,0},
                                        {0,0,0,0,0,0,0,0}};
-        invokeParseGridFromFileAndMatch("grid.txt", testMat, 1);
+        invokeParseFromFileAndMatch("grid.txt", testMat, 1);
     }
 
     @Test
@@ -162,7 +181,7 @@ public class GridReaderTest {
         for (int[] row : testMat)
             Arrays.fill(row, 0); // only for consistency, Java guarantees initialization to zero
 
-        invokeParseGridFromFileAndMatch("allZeroGrid.txt", testMat, 1);
+        invokeParseFromFileAndMatch("allZeroGrid.txt", testMat, 1);
     }
 
     @Test
@@ -171,7 +190,7 @@ public class GridReaderTest {
         for (int[] row : testMat)
             Arrays.fill(row, 1);
 
-        invokeParseGridFromFileAndMatch("allOneGrid.txt", testMat, 3);
+        invokeParseFromFileAndMatch("allOneGrid.txt", testMat, 3);
     }
 
 }
