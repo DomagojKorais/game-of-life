@@ -20,7 +20,7 @@ public class GridReaderTest {
     private static final String msgErrDimensions    = "Wrong matrix dimension specification format. It must be the 2nd non-empty line. Format: '<num_rows> <num_columns>' Numbers must be > 0";
     private static final String msgErrRowMismatch   = "Number of matrix rows does not match the declaration";
     private static final String msgErrColMismatch   = "Number of matrix columns does not consistently match the declaration";
-    private static final String msgErrMatrixFmt     = "Invalid matrix format";
+    private static final String msgErrMatrixFmt     = "Invalid matrix format. Only allowed characters are . and *";
 
     private String getFileFromResource(String resourceName) throws NullPointerException {
         return Objects.requireNonNull(GridReaderTest.class.getClassLoader().getResource(resourceName)).getFile();

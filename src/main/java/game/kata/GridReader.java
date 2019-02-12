@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public class GridReader {
 
@@ -17,8 +18,8 @@ public class GridReader {
 
     private static final Map<Integer,Integer> translationParseMap = Collections.unmodifiableMap(
             new HashMap<Integer,Integer>() {{
-                put((int) deadChar, deadInt);   // Keys must be ints because Java
-                put((int) aliveChar, aliveInt); // See String::chars for reason
+                put((int) deadChar, deadInt);   // Keys must be ints because
+                put((int) aliveChar, aliveInt); // String::chars returns ints
             }}
     );
 
@@ -34,34 +35,34 @@ public class GridReader {
         final IllegalArgumentException exc = new IllegalArgumentException(
                 "Wrong generation number specification format. It must be the 1st non-empty line. Format: 'Generation <num>: [optional comments]'" );
         int generation;
-        final String[] line_words = isolateWords.split(gen_line);
+        final String[] word_list = isolateWords.split(gen_line);
 
-        if (line_words.length < 2 | !line_words[0].equalsIgnoreCase("generation"))
+        if (word_list.length < 2 | !word_list[0].equalsIgnoreCase("generation"))
             throw exc;
 
         try {
-            generation = Integer.parseInt(line_words[1]);
+            generation = Integer.parseInt(word_list[1]);
         }
         catch (NumberFormatException e) { throw exc; }
 
-        if (line_words.length > 2)
-            if (line_words[2].charAt(0) != ':')
+        if (word_list.length > 2)
+            if (word_list[2].charAt(0) != ':')
                 throw exc;
 
         return generation;
     }
 
-    private int[] parseDimensionRow(String dim_line) throws IllegalArgumentException {
+    private int[] parseDimensionsRow(String dim_line) throws IllegalArgumentException {
         final IllegalArgumentException exc = new IllegalArgumentException(
                 "Wrong matrix dimension specification format. It must be the 2nd non-empty line. Format: '<num_rows> <num_columns>' Numbers must be > 0" );
         int rows, columns;
-        final String[] line_words = isolateWords.split(dim_line);
+        final String[] word_list = isolateWords.split(dim_line);
 
-        if (line_words.length != 2)
+        if (word_list.length != 2)
             throw exc;
         try {
-            rows    = Integer.parseInt(line_words[0]);
-            columns = Integer.parseInt(line_words[1]);
+            rows    = Integer.parseInt(word_list[0]);
+            columns = Integer.parseInt(word_list[1]);
         }
         catch (NumberFormatException e) { throw exc; }
 
@@ -73,39 +74,43 @@ public class GridReader {
 
     public Match parse(Stream<String> s_lines) throws IllegalArgumentException {
         int generation, rows, columns;
-        String[] lines = s_lines
+        Spliterator<String> lines = s_lines
                 .map(String::trim)
                 .filter(s -> !s.isEmpty())
-                .toArray(String[]::new);
+                .spliterator();
 
-        if (lines.length < 2)
+        ArrayList<String> first_two_lines = new ArrayList<>();
+        lines.tryAdvance(first_two_lines::add); // This is why we need to use the Spliterator
+        lines.tryAdvance(first_two_lines::add); // A Stream can't check out the first two rows without closing the Stream
+
+        if (first_two_lines.size() < 2)
             throw new IllegalArgumentException("Input too short");
 
-        String generation_line = lines[0];
-        generation = parseGenerationRow( generation_line );
-
-        String dimensions_line = lines[1];
-        int[] dimensions = parseDimensionRow(dimensions_line);
+        generation       = parseGenerationRow( first_two_lines.get(0) );
+        int[] dimensions = parseDimensionsRow( first_two_lines.get(1) );
         rows = dimensions[0];
         columns = dimensions[1];
 
-        if (lines.length != 2 + rows)
+        Cell[][] finalMatrix;
+        try {
+            Function<String,Cell[]> translateRow = (String line) -> line.chars()
+                            .mapToObj((int i) -> new Cell(translationParseMap.get(i)))
+                            .toArray(Cell[]::new);
+            finalMatrix = StreamSupport.stream(lines, true)
+                            .map(translateRow)
+                            .toArray(Cell[][]::new);
+        }
+        catch (NullPointerException e) {
+            throw new IllegalArgumentException("Invalid matrix format. Only allowed characters are . and *");
+        }
+
+        if (finalMatrix.length != rows)
             throw new IllegalArgumentException("Number of matrix rows does not match the declaration");
-        for (int i = 2; i < lines.length; ++i) {
-            if (lines[i].length() != columns)
+        for (Cell[] finalMatrixRow : finalMatrix) {
+            if (finalMatrixRow.length != columns)
                 throw new IllegalArgumentException("Number of matrix columns does not consistently match the declaration");
         }
 
-        Cell[][] finalMatrix;
-        try {
-            Function<String,Cell[]> translateRow =
-                    (String line) -> line.chars().mapToObj((int i) -> new Cell(translationParseMap.get(i))).toArray(Cell[]::new);
-            finalMatrix =
-                    Arrays.stream(lines).skip(2).map(translateRow).toArray(Cell[][]::new);
-        }
-        catch (NullPointerException e) {
-            throw new IllegalArgumentException("Invalid matrix format");
-        }
         return new Match(new Grid(finalMatrix), generation);
     }
 
