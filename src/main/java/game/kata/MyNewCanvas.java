@@ -16,7 +16,7 @@ public class MyNewCanvas
 
     public MyNewCanvas()
     {
-        int dim = 500;
+        int dim = 700;
         surface = new BufferedImage(dim,dim,BufferedImage.TYPE_INT_RGB);
         view = new JLabel(new ImageIcon(surface));
         Graphics g = surface.getGraphics();
@@ -27,6 +27,18 @@ public class MyNewCanvas
         g.setColor(Color.yellow);
 
         g.dispose();
+
+    }
+    public JFrame MyFrame()
+    {
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setContentPane(this.view);
+        frame.pack();
+        frame.setLocationByPlatform(true);
+        frame.setVisible(true);
+
+        return frame;
 
     }
 
@@ -61,8 +73,8 @@ public class MyNewCanvas
 
 
     public void drawGrid(int [][] squares, Graphics g){
-        int width = 500/squares.length ;
-        int offset = (500-width*squares.length)/2;
+        int width = 700/squares.length ;
+        int offset = (700-width*squares.length)/2;
 
         for (int j = 0; j <squares[0].length ; j++) {
             for (int i = 0; i < squares.length; i++) {
