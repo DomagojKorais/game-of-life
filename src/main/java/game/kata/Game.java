@@ -2,7 +2,7 @@ package game.kata;
 
 public class Game {
 
-    public static boolean judge (Cell cell, int aliveNeighbours) {
+    public static Cell judge (Cell cell, int aliveNeighbours) {
         boolean deathSentence;
 
         if (cell.getStatus() == 1)
@@ -10,6 +10,6 @@ public class Game {
         else
             deathSentence = (aliveNeighbours != 3);
 
-        return deathSentence;
+        return new Cell(deathSentence ? 0 : 1);
     }
 }

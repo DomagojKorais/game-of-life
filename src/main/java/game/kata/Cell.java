@@ -10,7 +10,7 @@ public class Cell {
     }
 
     Cell evolve(int aliveNeighbours) {
-        return new Cell(judge(this, aliveNeighbours) ? 0 : 1);
+        return judge(this, aliveNeighbours);
     }
 
     public int getStatus() { return status; }

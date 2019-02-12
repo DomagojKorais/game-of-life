@@ -18,32 +18,16 @@ public class CellTest {
         assertEquals(deadCell.getStatus(),0);
     }
 
-//    @Test(expected = IllegalArgumentException.class) // ALL NO LONGER RELEVANT
-//    public void checkWrongCellInceptionNeighbours(){
-//        Cell neverBorn = new Cell(1,10);
-//        assertEquals(neverBorn.getStatus(),10);
-//    }
+    @Test
+    public void checkSadEvolution(){
+        Cell sadCell = new Cell(1);
+        assertEquals(sadCell.evolve(5).getStatus(),0);
+    }
 
-//    @Test(expected = IllegalArgumentException.class)
-//    public void checkWrongCellInception(){
-//        Cell neverBorn = new Cell(2,2);
-//        assertEquals(neverBorn.getStatus(),1);
-//    }
-
-//    @Test
-//    public void checkSadEvolution(){
-//        Cell sadCell = new Cell(1,5);
-//        assertEquals(sadCell.evolve(),0);
-//    }
-
-//    @Test
-//    public void checkHappyEvolution(){
-//        Cell happyCell = new Cell(1,5);
-//        assertEquals(happyCell.evolve(),0);
-//    }
-
-
-
-
+    @Test
+    public void checkHappyEvolution(){
+        Cell happyCell = new Cell(1);
+        assertEquals(happyCell.evolve(3).getStatus(),1);
+    }
 }
 
