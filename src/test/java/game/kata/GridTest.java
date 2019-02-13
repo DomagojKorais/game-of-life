@@ -18,13 +18,6 @@ public class GridTest {
             {0,0,0,0,0,0,0,0,}
     };
 
-    private static final int[][] testMatrixNeighbors = new int[][] {
-            {0,0,0,1,1,1,0,0,},
-            {0,0,1,3,2,2,0,0,},
-            {0,0,1,2,2,2,0,0,},
-            {0,0,1,2,2,1,0,0,}
-    };
-
     private static final int[][] testMatrixEvolved = new int[][] {
             {0,0,0,0,0,0,0,0,},
             {0,0,0,1,1,0,0,0,},
