@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -54,13 +55,6 @@ public class GridReaderTest {
     private void invokeParseFromFileAndMatch(String resource, int[][] mat, int gen) throws IOException {
         String filename = getFileFromResource(resource);
         compareMatchWithMatrixAndGen(reader.parseFromFile(filename), mat, gen);
-    }
-
-    @Test
-    public void readFileTest() throws NullPointerException, IOException {
-        String filename = getFileFromResource("sparse_lines.txt");
-        assertArrayEquals(reader.readFile(filename).toArray(String[]::new),
-                new String[] {"", "", "Line 1", "", "  Line 2   ", "    ", "", "", "", "Line 3"});
     }
 
     @Test
@@ -191,6 +185,49 @@ public class GridReaderTest {
             Arrays.fill(row, 1);
 
         invokeParseFromFileAndMatch("allOneGrid.txt", testMat, 3);
+    }
+
+    private static final String basepath = Paths.get("").toAbsolutePath().toString();
+    private static final String relpath = "out/test/resources/grid.txt";
+    private static final String relpath2 = "./" + relpath;
+    private static final String abspath = basepath + "/" + relpath;
+
+    private static final String[] fileContent = new String[] {
+            "Generation 1:",
+            "4 8",
+            "........",
+            "....*...",
+            "...**...",
+            "........" };
+    @Test
+    public void pathConsistencyCheck() {
+        for (String path : new String[]{abspath, relpath, relpath2})
+            assertTrue(Paths.get(path).toFile().canRead());
+    }
+
+    @Test
+    public void readingTestAbsolute() throws IOException {
+        assertArrayEquals(fileContent,
+                reader.readFile(abspath).toArray(String[]::new));
+    }
+
+    @Test
+    public void readingTestRelative() throws IOException {
+        assertArrayEquals(fileContent,
+                reader.readFile(relpath).toArray(String[]::new));
+    }
+
+    @Test
+    public void readingTestRelative2() throws IOException {
+        assertArrayEquals(fileContent,
+                reader.readFile(relpath2).toArray(String[]::new));
+    }
+
+    @Test
+    public void readFileTest() throws NullPointerException, IOException {
+        String filename = getFileFromResource("sparse_lines.txt");
+        assertArrayEquals(reader.readFile(filename).toArray(String[]::new),
+                new String[] {"", "", "Line 1", "", "  Line 2   ", "    ", "", "", "", "Line 3"});
     }
 
 }

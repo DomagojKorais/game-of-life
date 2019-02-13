@@ -35,7 +35,7 @@ public class GridReader {
         final IllegalArgumentException exc = new IllegalArgumentException(
                 "Wrong generation number specification format. It must be the 1st non-empty line. Format: 'Generation <num>: [optional comments]'" );
         int generation;
-        final String[] word_list = isolateWords.split(gen_line);
+        final String[] word_list = isolateWords.split(gen_line, 3);
 
         if (word_list.length < 2 | !word_list[0].equalsIgnoreCase("generation"))
             throw exc;
@@ -56,7 +56,7 @@ public class GridReader {
         final IllegalArgumentException exc = new IllegalArgumentException(
                 "Wrong matrix dimension specification format. It must be the 2nd non-empty line. Format: '<num_rows> <num_columns>' Numbers must be > 0" );
         int rows, columns;
-        final String[] word_list = isolateWords.split(dim_line);
+        final String[] word_list = isolateWords.split(dim_line, 3);
 
         if (word_list.length != 2)
             throw exc;

@@ -1,31 +1,44 @@
 package game.kata;
 
 import java.io.IOException;
-import java.util.Objects;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    private static final String strFormat =
+            "Command-line format: java <class> <grid file> <number of iterations>\n" +
+            "where:\n" +
+            "    <class> is the class file Main from game-of-life;\n" +
+            "    <grid file> is the file containing the starting grid data;\n" +
+            "    <number of iterations> is the number of iterations to be computed\n" +
+            "\n";
 
-        try{
-            int generations = Integer.parseInt(args[0]);
+    private static final GridReader reader = new GridReader();
 
-            GridReader reader = new GridReader();
-            String filename = Objects.requireNonNull(Main.class.getClassLoader().getResource("grid.txt")).getFile();
-            Match match = reader.parseFromFile(filename);
+    public static void main(String[] args) {
+        int generations;
+        Match match;
+
+        try {
+            generations = Integer.parseInt(args[1]);
+            match = reader.parseFromFile(args[0]);
+
             match.play(generations);
-
         }
-
-        catch(NumberFormatException e){
-            System.out.println("\nYour input is not a number");
-
-        }catch(ArrayIndexOutOfBoundsException e){
-            System.out.println("\nPlease enter the number of generations");
+        catch (IOException e) {
+            System.err.println("\nFile '" + args[0] + "' not found");
+            System.exit(1);
+        }
+        catch (NumberFormatException e) {
+            System.err.println("\nInvalid option provided for the number of iterations\n");
+            System.err.println(strFormat);
+            System.exit(1);
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println("\nNot enough arguments provided\n");
+            System.err.println(strFormat);
+            System.exit(1);
         }
 
     }
 }
-
-
 
 
