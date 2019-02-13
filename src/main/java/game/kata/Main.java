@@ -5,11 +5,24 @@ import java.util.Objects;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        GridReader reader = new GridReader();
-        String filename = Objects.requireNonNull(Main.class.getClassLoader().getResource("grid.txt")).getFile();
-        Match match = reader.parseFromFile(filename);
-        int iterations = 10;
-        match.play(iterations);
+
+        try{
+            int generations = Integer.parseInt(args[0]);
+
+            GridReader reader = new GridReader();
+            String filename = Objects.requireNonNull(Main.class.getClassLoader().getResource("grid.txt")).getFile();
+            Match match = reader.parseFromFile(filename);
+            match.play(generations);
+
+        }
+
+        catch(NumberFormatException e){
+            System.out.println("\nYour input is not a number");
+
+        }catch(ArrayIndexOutOfBoundsException e){
+            System.out.println("\nPlease enter the number of generations");
+        }
+
     }
 }
 
