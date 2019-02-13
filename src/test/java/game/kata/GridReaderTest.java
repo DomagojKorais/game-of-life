@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Objects;
@@ -187,10 +188,10 @@ public class GridReaderTest {
         invokeParseFromFileAndMatch("allOneGrid.txt", testMat, 3);
     }
 
-    private static final String basepath = Paths.get("").toAbsolutePath().toString();
-    private static final String relpath = "out/test/resources/grid.txt";
-    private static final String relpath2 = "./" + relpath;
-    private static final String abspath = basepath + "/" + relpath;
+    private static final Path basepath = Paths.get("").toAbsolutePath();
+    private static final Path relpath = Paths.get("out", "test", "resources", "grid.txt");
+    private static final Path relpath2 = Paths.get(".").resolve(relpath);
+    private static final Path abspath = basepath.resolve(relpath);
 
     private static final String[] fileContent = new String[] {
             "Generation 1:",
@@ -201,26 +202,26 @@ public class GridReaderTest {
             "........" };
     @Test
     public void pathConsistencyCheck() {
-        for (String path : new String[]{abspath, relpath, relpath2})
-            assertTrue(Paths.get(path).toFile().canRead());
+        for (Path path : new Path[]{abspath, relpath, relpath2})
+            assertTrue(Paths.get(path.toString()).toFile().canRead());
     }
 
     @Test
     public void readingTestAbsolute() throws IOException {
         assertArrayEquals(fileContent,
-                reader.readFile(abspath).toArray(String[]::new));
+                reader.readFile(abspath.toString()).toArray(String[]::new));
     }
 
     @Test
     public void readingTestRelative() throws IOException {
         assertArrayEquals(fileContent,
-                reader.readFile(relpath).toArray(String[]::new));
+                reader.readFile(relpath.toString()).toArray(String[]::new));
     }
 
     @Test
     public void readingTestRelative2() throws IOException {
         assertArrayEquals(fileContent,
-                reader.readFile(relpath2).toArray(String[]::new));
+                reader.readFile(relpath2.toString()).toArray(String[]::new));
     }
 
     @Test
