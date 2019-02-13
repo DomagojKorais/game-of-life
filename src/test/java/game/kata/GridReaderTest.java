@@ -189,9 +189,9 @@ public class GridReaderTest {
     }
 
     private static final Path basepath = Paths.get("").toAbsolutePath();
-    private static final Path relpath = Paths.get("out", "test", "resources", "grid.txt");
+    private static final Path abspath = Paths.get(Objects.requireNonNull(GridReaderTest.class.getClassLoader().getResource("grid.txt")).getPath());
+    private static final Path relpath = basepath.relativize(abspath);
     private static final Path relpath2 = Paths.get(".").resolve(relpath);
-    private static final Path abspath = basepath.resolve(relpath);
 
     private static final String[] fileContent = new String[] {
             "Generation 1:",
