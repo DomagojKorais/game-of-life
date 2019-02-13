@@ -50,14 +50,6 @@ public class GridTest {
         assertEquals(grid.getColumns(), testMatrix[0].length);
     }
 
-//    @Test
-//    public void checkAllNeighbors() { // NOT RELEVANT ANYMORE
-//        Grid grid = new Grid(testMatrix);
-//
-//        IntBinaryOperator lambda = grid::countAliveNeighbours;
-//        matchLambdaResultsAgainstMatrix(lambda, testMatrixNeighbors);
-//    }
-
     @Test
     public void checkEvolvedContent() {
         Grid grid = new Grid(testMatrix);
@@ -72,7 +64,6 @@ public class GridTest {
     public void checkPrintGrid() {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
-        // After this all System.out.println() statements will come to outContent stream.
 
         Grid grid = new Grid(testMatrix);
         grid.printGrid();
@@ -82,27 +73,4 @@ public class GridTest {
                               "00000000\n",outContent.toString());
     }
 
-    /*
-    @Test
-    public void checkExtendedMatrix() {
-        Grid grid = new Grid(testMatrix);
-        int[][] testExtMat = new int[][] {
-                {0,0,0,0,0,0,0,0,0,0,},
-                {0,0,0,0,0,0,0,0,0,0,},
-                {0,0,0,0,0,1,0,0,0,0,},
-                {0,0,0,0,1,1,0,0,0,0,},
-                {0,0,0,0,0,0,0,0,0,0,},
-                {0,0,0,0,0,0,0,0,0,0,} };
-        IntBinaryOperator lambda = (int i, int j) -> testExtMat[i][j];
-        matchLambdaResultsAgainstMatrix(lambda, grid.toExtendedIntMatrix());
-    }
-
-    @Test
-    public void checkNewNeighbourMatrixMethod() {
-        Grid grid = new Grid(testMatrix);
-        IntBinaryOperator lambda = (int i, int j) -> testMatrixNeighbors[i][j];
-        int[][] neighbourMat = grid.getNeighbourCountMatrix();
-//        System.out.println(Arrays.deepToString(neighbourMat));
-        matchLambdaResultsAgainstMatrix(lambda, neighbourMat);
-    }*/
  }

@@ -1,12 +1,7 @@
 package game.kata;
 import java.util.Arrays;
-import java.util.function.Function;
-import java.util.function.IntBinaryOperator;
 import java.util.function.IntPredicate;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
-import static game.kata.Game.judge;
 
 class Grid {
     private final int rows;
@@ -22,7 +17,7 @@ class Grid {
         cellMatrix = cellMat;
     }
 
-    public Grid(int[][] intMatrix) { // JUST FOR TESTS
+    public Grid(int[][] intMatrix) {
         this(Arrays.stream(intMatrix)
                         .map(row -> Arrays.stream(row)
                                 .mapToObj(Cell::new)
@@ -44,7 +39,8 @@ class Grid {
     }
 
 
-    public int countAliveNeighbours(int row, int col) {       // THIS HAS BEEN TRANSFORMED INTO THE getNeighbourCountMatrix() METHOD BELOW
+    public int countAliveNeighbours(int row, int col) {
+
         int currentCellState = this.getCell(row,col).getStatus();
         IntPredicate rowIdxAcceptable = i -> (row+i>=0 && row+i<rows);
         IntPredicate colIdxAcceptable = j -> (col+j>=0 && col+j<columns);
@@ -62,7 +58,7 @@ class Grid {
     public Grid evolve() {
         Cell[][] newCellMatrix = IntStream.range(0, rows).mapToObj((int i) ->
                 IntStream.range(0, columns)
-                        .mapToObj((int j) -> cellMatrix[i][j].evolve(countAliveNeighbours(i,j)))// Cell( ? 0 : 1))//judge(cellMatrix[i][j], neighbourCountMatrix[i][j]) ? 0 : 1))
+                        .mapToObj((int j) -> cellMatrix[i][j].evolve(countAliveNeighbours(i,j)))
                         .toArray(Cell[]::new))
                 .toArray(Cell[][]::new);
         return new Grid(newCellMatrix);
