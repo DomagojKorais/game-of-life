@@ -24,6 +24,13 @@ public class GridReaderTest {
     private static final String msgErrColMismatch   = "Number of matrix columns does not consistently match the declaration";
     private static final String msgErrMatrixFmt     = "Invalid matrix format. Only allowed characters are . and *";
 
+    private static final int[][] testMatrix = new int[][] {
+            {0,0,0,0,0,0,0,0,},
+            {0,0,0,0,1,0,0,0,},
+            {0,0,0,1,1,0,0,0,},
+            {0,0,0,0,0,0,0,0,}
+    };
+
     private String getFileFromResource(String resourceName) throws NullPointerException {
         return Objects.requireNonNull(GridReaderTest.class.getClassLoader().getResource(resourceName)).getFile();
     }
@@ -231,4 +238,10 @@ public class GridReaderTest {
                 new String[] {"", "", "Line 1", "", "  Line 2   ", "    ", "", "", "", "Line 3"});
     }
 
+    @Test
+    public void dumpTest() {
+        Match match = new Match(new Grid(testMatrix), 1);
+        assertArrayEquals( fileContent,
+                GridReader.dump(match).toArray(String[]::new) );
+    }
 }

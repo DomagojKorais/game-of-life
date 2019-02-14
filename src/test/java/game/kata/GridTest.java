@@ -48,22 +48,6 @@ public class GridTest {
         Grid grid = new Grid(testMatrix);
         Grid newGrid = grid.evolve();
         IntBinaryOperator lambda = (int i, int j) -> newGrid.getCell(i,j).getStatus();
-        grid.printGrid();
-        newGrid.printGrid();
         matchLambdaResultsAgainstMatrix(lambda, testMatrixEvolved);
     }
-
-    @Test
-    public void checkPrintGrid() {
-        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-
-        Grid grid = new Grid(testMatrix);
-        grid.printGrid();
-        assertEquals("00000000\n" +
-                              "00001000\n" +
-                              "00011000\n" +
-                              "00000000\n",outContent.toString());
-    }
-
  }

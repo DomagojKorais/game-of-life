@@ -3,7 +3,7 @@ package game.kata;
 public class Match {
 
     private int currentGeneration;
-    private Grid currentGrid ;
+    private Grid currentGrid;
 
     Match(Grid initialSetup, int generation) {
         currentGeneration = generation;
@@ -15,8 +15,7 @@ public class Match {
     public Grid getGrid() { return currentGrid; }
 
     public void printCurrentMatchStatus() {
-        System.out.println("Generation: " + currentGeneration + "\n");
-        currentGrid.printGrid();
+        GridReader.dump(this).forEach(System.out::println);
         System.out.println("\n");
     }
 
@@ -25,11 +24,12 @@ public class Match {
         currentGrid = currentGrid.evolve();
     }
 
-    public void play (int numberOfIterations) {
-        printCurrentMatchStatus();
+    public void play (int numberOfIterations, boolean printOnlyFinalIteration) {
         for (int i = 0; i < numberOfIterations; i++) {
+            if (!printOnlyFinalIteration)
+                printCurrentMatchStatus();
             play_once();
-            printCurrentMatchStatus();
         }
+        printCurrentMatchStatus();
     }
 }

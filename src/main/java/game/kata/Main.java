@@ -21,7 +21,7 @@ public class Main {
             generations = Integer.parseInt(args[1]);
             match = reader.parseFromFile(args[0]);
 
-            match.play(generations);
+            match.play(generations, false);
         }
         catch (IOException e) {
             System.err.println("\nFile '" + args[0] + "' not found");

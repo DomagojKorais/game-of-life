@@ -30,15 +30,6 @@ class Grid {
         return cellMatrix[i][j];
     }
 
-    public void printGrid(){
-        Arrays.stream(cellMatrix).forEach(row -> {
-                            Arrays.stream(row).forEach((Cell c) -> System.out.print(c.getStatus()));
-                            System.out.print("\n");
-        });
-
-    }
-
-
     public int countAliveNeighbours(int row, int col) {
 
         int currentCellState = this.getCell(row,col).getStatus();

@@ -6,6 +6,8 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.function.Function;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -20,6 +22,13 @@ public class GridReader {
             new HashMap<Integer,Integer>() {{
                 put((int) deadChar, deadInt);   // Keys must be ints because
                 put((int) aliveChar, aliveInt); // String::chars returns ints
+            }}
+    );
+
+    private static final Map<Integer,String> translationDumpMap = Collections.unmodifiableMap(
+            new HashMap<Integer,String>() {{
+                put(deadInt, String.valueOf(deadChar));   // Keys must be ints because
+                put(aliveInt, String.valueOf(aliveChar)); // String::chars returns ints
             }}
     );
 
@@ -118,5 +127,18 @@ public class GridReader {
         return parse( readFile(filename) );
     }
 
+    public static Stream<String> dump(Match match) {
+        Grid grid = match.getGrid();
+        Stream<String> firstTwoRows = Stream.of(
+                "Generation " + match.getGenerationNumber() + ":",
+                grid.getRows() + " " + grid.getColumns()
+        );
+        Stream<String> matrix = IntStream.range(0, grid.getRows()).mapToObj( (int i) ->
+                IntStream.range(0, grid.getColumns()).mapToObj( (int j) ->
+                        translationDumpMap.get(grid.getCell(i, j).getStatus())
+                        ).collect(Collectors.joining())
+                );
+        return Stream.concat(firstTwoRows, matrix);
+    }
 }
 
